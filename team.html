@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Team Phoenix | The Collective</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background: #0a0000;
+        font-family: 'Poppins', sans-serif;
+        overflow-x: hidden;
+        min-height: 100vh;
+    }
+
+    .bg-gradient {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 20% 50%, #3a0000, #0a0000);
+        z-index: -2;
+    }
+
+    #particleCanvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #2a0000; }
+    ::-webkit-scrollbar-thumb { background: #ff6a4b; border-radius: 12px; }
+
+    /* ========== TOP BAR WITH LOGO AND TITLE ========== */
+    .top-bar {
+        position: relative;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0,0,0,0.4);
+        backdrop-filter: blur(20px);
+        z-index: 100;
+        padding: 10px 50px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(255,179,71,0.3);
+    }
+
+    .logo {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 24px;
+        font-weight: 800;
+        background: linear-gradient(135deg, #fff1b5, #ffbc6e);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    .back-home {
+        background: rgba(255,179,71,0.15);
+        padding: 8px 25px;
+        border-radius: 40px;
+        text-decoration: none;
+        color: #ffb347;
+        transition: 0.3s;
+        border: 1px solid rgba(255,179,71,0.3);
+    }
+    .back-home:hover {
+        background: #ffb347;
+        color: #1a0000;
+        transform: scale(1.05);
+    }
+
+    /* ========== GOLDEN LINE WITH HAMBURGER ========== */
+    .golden-section {
+        position: relative;
+        top: 70px;
+        left: 0;
+        right: 0;
+        z-index: 99;
+        background: transparent;
+    }
+
+    .golden-line {
+        height: 2px;
+        background: linear-gradient(90deg, #ffb347, #ff6b4a, #ffb347);
+        margin: 0 50px;
+        box-shadow: 0 0 8px rgba(255,179,71,0.5);
+    }
+
+    .hamburger-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 5px 50px 0 50px;
+        margin-top: 5px;
+    }
+
+    .menu-icon {
+        font-size: 28px;
+        cursor: pointer;
+        transition: 0.2s;
+        background: rgba(255,179,71,0.15);
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        color: #ffb347;
+        border: 1px solid rgba(255,179,71,0.3);
+    }
+
+    .menu-icon:hover {
+        background: #ffb347;
+        color: #2c0000;
+        transform: rotate(90deg);
+    }
+
+    .page-indicator {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 18px;
+        font-weight: 600;
+        background: linear-gradient(135deg, #fff1b5, #ffbc6e);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        letter-spacing: 2px;
+    }
+
+    /* Main Container */
+    .container {
+        position: relative;
+        z-index: 5;
+        padding-top: 10px;
+        min-height: 100vh;
+    }
+
+    /* Hero Title */
+    .hero {
+        text-align: center;
+        padding: 15px 20px 30px;
+    }
+
+    .hero h1 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 56px;
+        background: linear-gradient(135deg, #fff1b5, #ffbc6e, #ff6b4a);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        letter-spacing: 4px;
+    }
+
+    .hero p {
+        color: #ffb347;
+        letter-spacing: 3px;
+        font-size: 12px;
+        margin-top: 10px;
+    }
+
+    /* ========== STAGGERED TEAM ROWS ========== */
+    .team-staggered {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 40px 20px 100px;
+    }
+
+    .team-row {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        background: rgba(0,0,0,0.3);
+        backdrop-filter: blur(10px);
+        border-radius: 80px;
+        padding: 15px 25px 15px 15px;
+        border: 1px solid rgba(255,179,71,0.2);
+        transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .team-row:hover {
+        transform: translateX(15px);
+        border-color: #ffb347;
+        background: rgba(0,0,0,0.5);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .team-row::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,179,71,0.1), transparent);
+        transition: left 0.5s;
+    }
+
+    .team-row:hover::before {
+        left: 100%;
+    }
+
+    .row-avatar {
+        width: 90px;
+        height: 90px;
+        background: linear-gradient(135deg, #ffb347, #ff6b4a);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 48px;
+        flex-shrink: 0;
+        transition: 0.3s;
+        box-shadow: 0 0 20px rgba(255,107,74,0.3);
+    }
+
+    .team-row:hover .row-avatar {
+        transform: scale(1.05);
+        box-shadow: 0 0 30px rgba(255,107,74,0.6);
+    }
+
+    .row-info {
+        flex: 1;
+    }
+
+    .row-name {
+        font-size: 28px;
+        font-weight: 800;
+        font-family: 'Orbitron', sans-serif;
+        background: linear-gradient(135deg, #fff1b5, #ffbc6e);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    .row-real {
+        font-size: 12px;
+        color: #ffb347;
+        opacity: 0.7;
+        margin-top: 3px;
+    }
+
+    .row-role {
+        display: inline-block;
+        background: rgba(255,179,71,0.2);
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 10px;
+        font-weight: 600;
+        margin-top: 8px;
+        color: #ffb347;
+    }
+
+    .row-arrow {
+        font-size: 24px;
+        color: #ffb347;
+        opacity: 0.5;
+        transition: 0.3s;
+    }
+
+    .team-row:hover .row-arrow {
+        opacity: 1;
+        transform: translateX(5px);
+    }
+
+    /* ========== GLASSMORPHISM MODAL ========== */
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .profile-card {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(20px);
+        padding: 40px;
+        width: 500px;
+        max-width: 90vw;
+        border-radius: 40px;
+        text-align: center;
+        animation: floatIn 0.4s ease;
+        border: 1px solid rgba(255, 179, 71, 0.5);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    @keyframes floatIn {
+        from { opacity: 0; transform: translateY(50px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .profile-img {
+        width: 120px;
+        height: 120px;
+        border-radius: 30px;
+        object-fit: cover;
+        border: 3px solid #ffb347;
+        margin-bottom: 20px;
+    }
+
+    .profile-card h2 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 26px;
+        background: linear-gradient(135deg, #fff1b5, #ffbc6e);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    .profile-role {
+        color: #ffb347;
+        margin: 10px 0;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .profile-desc {
+        margin: 20px 0;
+        line-height: 1.6;
+        font-size: 14px;
+        background: rgba(0, 0, 0, 0.3);
+        padding: 15px;
+        border-radius: 20px;
+        color: #fff;
+    }
+
+    .socials {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .socials a {
+        font-size: 24px;
+        color: #fff;
+        transition: 0.2s;
+        background: rgba(255, 255, 255, 0.1);
+        width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        text-decoration: none;
+    }
+
+    .socials a:hover {
+        background: #ffb347;
+        color: #2c0000;
+        transform: translateY(-3px);
+    }
+
+    .close {
+        position: absolute;
+        top: 20px;
+        right: 25px;
+        font-size: 24px;
+        cursor: pointer;
+        background: rgba(255, 255, 255, 0.15);
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.2s;
+        color: #fff;
+    }
+
+    .close:hover {
+        background: #ff4d4d;
+        transform: rotate(90deg);
+    }
+
+    .footer {
+        text-align: center;
+        padding: 40px;
+        border-top: 1px solid rgba(255,179,71,0.2);
+        background: rgba(0,0,0,0.3);
+        backdrop-filter: blur(10px);
+        position: relative;
+        z-index: 5;
+        color: #ffb347;
+    }
+
+    /* ========== SLIDER MENU STYLES ========== */
+    .slider-menu {
+        position: fixed;
+        top: 0;
+        left: -300px;
+        width: 300px;
+        height: 100%;
+        background: linear-gradient(180deg, #1a0a0a, #2d0909);
+        backdrop-filter: blur(20px);
+        z-index: 1001;
+        transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        padding: 30px 0;
+        border-right: 2px solid #ffb347;
+        box-shadow: 5px 0 30px rgba(0,0,0,0.5);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .slider-menu.open { left: 0; }
+
+    .menu-logo {
+        text-align: center;
+        padding: 30px 20px;
+        border-bottom: 1px solid rgba(255,179,71,0.3);
+        margin-bottom: 30px;
+    }
+
+    .menu-logo img {
+        width: 80px;
+        height: auto;
+        margin-bottom: 12px;
+    }
+
+    .menu-logo h3 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 18px;
+        background: linear-gradient(135deg, #fff1b5, #ffbc6e);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    .menu-items {
+        flex: 1;
+        padding: 0 20px;
+    }
+
+    .menu-item {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        color: #fff;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 16px;
+    }
+
+    .menu-item i {
+        width: 28px;
+        font-size: 18px;
+        color: #ffb347;
+        text-align: center;
+    }
+
+    .menu-item span { flex: 1; }
+    .menu-item:hover {
+        background: rgba(255,179,71,0.15);
+        transform: translateX(8px);
+    }
+
+    .menu-footer {
+        padding: 20px;
+        border-top: 1px solid rgba(255,179,71,0.3);
+        margin-top: auto;
+    }
+
+    .member-login-btn {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 18px;
+        background: linear-gradient(135deg, rgba(255,179,71,0.15), rgba(255,107,74,0.15));
+        border: 1px solid rgba(255,179,71,0.4);
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        width: 100%;
+    }
+
+    .member-login-btn i {
+        font-size: 18px;
+        color: #ffb347;
+    }
+
+    .member-login-btn span {
+        font-size: 14px;
+        font-weight: 500;
+        color: #ffb347;
+        flex: 1;
+        text-align: left;
+    }
+
+    .member-login-btn:hover {
+        background: linear-gradient(135deg, #ffb347, #ff6b4a);
+        transform: translateX(5px);
+    }
+
+    .member-login-btn:hover i,
+    .member-login-btn:hover span {
+        color: #2c0000;
+    }
+
+    .menu-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        backdrop-filter: blur(3px);
+        z-index: 1000;
+        display: none;
+    }
+    .menu-overlay.show { display: block; }
+    body.menu-open { overflow: hidden; }
+
+    @media (max-width: 768px) {
+        .top-bar { padding: 12px 25px; }
+        .golden-line { margin: 0 25px; }
+        .hamburger-row { padding: 10px 25px 0 25px; }
+        .container { padding-top: 140px; }
+        .hero h1 { font-size: 32px; }
+        .team-row { padding: 12px 15px 12px 12px; }
+        .row-avatar { width: 65px; height: 65px; font-size: 32px; }
+        .row-name { font-size: 18px; }
+    }
+</style>
+</head>
+<body>
+
+<!-- SLIDER MENU -->
+<div class="slider-menu" id="sliderMenu">
+    <div class="menu-logo">
+        <img src="Glogo.png" alt="Team Phoenix" onerror="this.src='https://placehold.co/80x80/ff4444/white?text=PHX'">
+        <h3>TEAM PHOENIX</h3>
+    </div>
+    <div class="menu-items">
+        <a href="index.html" class="menu-item"><i class="fas fa-home"></i><span>HOME</span></a>
+        <a href="team.html" class="menu-item"><i class="fas fa-users"></i><span>TEAM</span></a>
+        <a href="projects.html" class="menu-item"><i class="fas fa-rocket"></i><span>PROJECTS</span></a>
+        <a href="achievements.html" class="menu-item">
+            <i class="fas fa-trophy"></i>
+            <span>ACHIEVEMENTS</span>
+        </a>
+
+        <a href="contact.html" class="menu-item">
+            <i class="fas fa-envelope"></i>
+            <span>CONTACT US</span>
+        </a>
+    </div>
+    <div class="menu-footer">
+        <a href="admin.html" class="member-login-btn">
+            <i class="fas fa-user-shield"></i>
+            <span>ADMIN PANEL</span>
+            <i class="fas fa-arrow-right" style="font-size: 12px; opacity: 0.7;"></i>
+        </a>
+    </div>
+</div>
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<!-- PAGE TRANSITION OVERLAY -->
+<div class="transition-overlay" id="transitionOverlay"></div>
+
+<!-- BACKGROUND -->
+<div class="bg-gradient"></div>
+<canvas id="particleCanvas"></canvas>
+
+<!-- TOP BAR WITH LOGO AND BACK BUTTON -->
+<div class="top-bar">
+    <div class="logo">🐦‍🔥 TEAM PHOENIX</div>
+    <a href="index.html" class="back-home">← RETURN TO HOME</a>
+</div>
+
+<!-- GOLDEN LINE WITH HAMBURGER LEFT AND PAGE NAME RIGHT -->
+<div class="golden-section">
+    <!-- <div class="golden-line"></div> -->
+    <div class="hamburger-row">
+        <div class="menu-icon" id="menuIcon">☰</div>
+        <!-- <div class="page-indicator">✦ OUR TEAM ✦</div> -->
+    </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="container">
+    <div class="hero">
+        <h1>⚡ THE COLLECTIVE ⚡</h1>
+        <p>✦ SIX MINDS. ONE MISSION. RISING FROM THE ASHES ✦</p>
+    </div>
+
+    <div class="team-staggered">
+        <div class="team-row" data-member="0">
+            <div class="row-avatar">👑</div>
+            <div class="row-info">
+                <div class="row-name">MAKDI</div>
+                <div class="row-real">YASHANK</div>
+                <div class="row-role">🔥 LEADER & BACKEND</div>
+            </div>
+            <div class="row-arrow">→</div>
+        </div>
+
+        <div class="team-row" data-member="1">
+            <div class="row-avatar">⚙️</div>
+            <div class="row-info">
+                <div class="row-name">NEELA HIT</div>
+                <div class="row-real">NEELAKSHI</div>
+                <div class="row-role">⚙️ BACKEND ARCHITECT</div>
+            </div>
+            <div class="row-arrow">→</div>
+        </div>
+
+        <div class="team-row" data-member="2">
+            <div class="row-avatar">🎨</div>
+            <div class="row-info">
+                <div class="row-name">NIKOLA TESLA</div>
+                <div class="row-real">NIKITA</div>
+                <div class="row-role">🎨 FRONTEND MASTER</div>
+            </div>
+            <div class="row-arrow">→</div>
+        </div>
+
+        <div class="team-row" data-member="3">
+            <div class="row-avatar">🧠</div>
+            <div class="row-info">
+                <div class="row-name">PUSHPAK VIMAAN</div>
+                <div class="row-real">PUSHP</div>
+                <div class="row-role">🧠 AI DEVELOPER</div>
+            </div>
+            <div class="row-arrow">→</div>
+        </div>
+
+        <div class="team-row" data-member="4">
+            <div class="row-avatar">✨</div>
+            <div class="row-info">
+                <div class="row-name">YUGANDA</div>
+                <div class="row-real">YUVRAJ</div>
+                <div class="row-role">✨ CREATIVE DESIGNER</div>
+            </div>
+            <div class="row-arrow">→</div>
+        </div>
+
+        <div class="team-row" data-member="5">
+            <div class="row-avatar">🎬</div>
+            <div class="row-info">
+                <div class="row-name">HORSESHIT</div>
+                <div class="row-real">HARSHIT</div>
+                <div class="row-role">🎬 ANIMATOR & VFX</div>
+            </div>
+            <div class="row-arrow">→</div>
+        </div>
+    </div>
+</div>
+
+<!-- GLASSMORPHISM MODAL -->
+<div class="modal" id="modal">
+    <div class="profile-card">
+        <span class="close" id="closeModalBtn">✖</span>
+        <img id="pimg" class="profile-img" src="https://randomuser.me/api/portraits/men/32.jpg" alt="profile">
+        <h2 id="pname">Yashank Makdi</h2>
+        <div class="profile-role" id="prole">LEADER &amp; BACKEND</div>
+        <p id="pdesc" class="profile-desc">The phoenix coder — building systems that never crash.</p>
+        <div class="socials">
+            <a id="githubLink" target="_blank"><i class="fab fa-github"></i></a>
+            <a id="linkedinLink" target="_blank"><i class="fab fa-linkedin"></i></a>
+            <a id="instagramLink" target="_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <p>✨ SIX MINDS. ONE MISSION. RISING FROM THE ASHES. ✨</p>
+</div>
+
+<script>
+    // ========== SLIDER MENU ==========
+    const menuIcon = document.getElementById('menuIcon');
+    const sliderMenu = document.getElementById('sliderMenu');
+    const menuOverlay = document.getElementById('menuOverlay');
+
+    function openMenu() {
+        sliderMenu.classList.add('open');
+        menuOverlay.classList.add('show');
+        document.body.classList.add('menu-open');
+    }
+
+    function closeMenu() {
+        sliderMenu.classList.remove('open');
+        menuOverlay.classList.remove('show');
+        document.body.classList.remove('menu-open');
+    }
+
+    if (menuIcon) {
+        menuIcon.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (sliderMenu.classList.contains('open')) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
+        });
+    }
+
+    if (menuOverlay) {
+        menuOverlay.addEventListener('click', closeMenu);
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && sliderMenu && sliderMenu.classList.contains('open')) {
+            closeMenu();
+        }
+    });
+
+    // ========== PARTICLE BACKGROUND ==========
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    function createParticles() {
+        particles = [];
+        for (let i = 0; i < 80; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 3 + 1,
+                speedX: (Math.random() - 0.5) * 0.5,
+                speedY: (Math.random() - 0.5) * 0.3,
+                color: `rgba(255, ${Math.random() * 100 + 50}, 50, ${Math.random() * 0.3 + 0.1})`
+            });
+        }
+    }
+
+    function animateParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+            p.x += p.speedX;
+            p.y += p.speedY;
+            if (p.x < 0) p.x = canvas.width;
+            if (p.x > canvas.width) p.x = 0;
+            if (p.y < 0) p.y = canvas.height;
+            if (p.y > canvas.height) p.y = 0;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fillStyle = p.color;
+            ctx.fill();
+        });
+        requestAnimationFrame(animateParticles);
+    }
+
+    window.addEventListener('resize', () => {
+        resizeCanvas();
+        createParticles();
+    });
+    resizeCanvas();
+    createParticles();
+    animateParticles();
+
+    // ========== MEMBER DATA ==========
+    const members = [
+        { name: "Yashank 'Makdi'", role: "LEADER & BACKEND", desc: "🔥 I'm Yashank aka makdi, weaving the backend webs. I lead with resilience, build databases that never sleep, and ensure Team Phoenix rises like a blazing star. When code breaks at 3 AM, I'm the one brewing coffee and rewriting logic.", img: "/MEHU.jpeg", github: "https://github.com/NotYash89", linkedin: "https://linkedin.com/in/yashank-makdi", insta: "https://www.instagram.com/dyinglight.09/" },
+        { name: "Neelakshi 'Neela Hit'", role: "BACKEND ARCHITECT", desc: "⚙️ Neelakshi here – I deal with APIs, databases, and server sorcery. If it runs on the backend, I own it. I like clean code and scalable systems. Outside coding? I swim in logic and fix broken middleware.", img: "/NEELA HIT.jpeg", github: "https://github.com/neelahit", linkedin: "https://linkedin.com/in/neelakshi-backend", insta: "https://instagram.com/neela_hit" },
+        { name: "Nikita 'Nikola Tesla'", role: "FRONTEND MASTER", desc: "✨ Nikita, but call me Nikola Tesla of UI. I turn designs into interactive reality. Responsive, smooth, futuristic – that's my style. Pixel perfect and obsessed with micro-interactions.", img: "/NIkola tesla.jpeg", github: "https://github.com/nikitasingh1617", linkedin: "https://www.linkedin.com/in/nikita-singh-8ab10434a?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app", insta: "https://www.instagram.com/lego_manobangs?igsh=cnM4cDJzY2g2MjRt" },
+        { name: "Pushp 'Pushpak Vimaan'", role: "AI DEVELOPER", desc: "🚀 Pushp - I build intelligent models, LLM integrations, and predictive systems. My code flies like the mythical Pushpak Vimaan; AI that understands and adapts. Hackathons are my playground.", img: "/pushpaaa.jpeg", github: "https://github.com/codewithpushp", linkedin: "https://www.linkedin.com/in/pushp-raj-486b25402?utm_source=share_via&utm_content=profile&utm_medium=member_android", insta: "https://www.instagram.com/hey.pushp?igsh=MWhibXhuZm11MjJtYw==" },
+        { name: "Yuvraj 'Yuganda'", role: "CREATIVE DESIGNER", desc: "🎨 Yuvraj aka Yuganda – I craft brand identities, sleek interfaces, and visual vibes. From moodboards to final assets, I make sure everything looks legendary. Creativity is my superpower.", img: "/YUganda.jpeg", github: "https://github.com/yuvraj-creative", linkedin: "https://linkedin.com/in/yuvraj-designs", insta: "https://instagram.com/uganda_art" },
+        { name: "Harshit 'Horseshit'", role: "ANIMATOR & VFX", desc: "🎬 Harshit – the mad animator. I bring motion to ideas, 2D/3D animations, and explosion of creativity. Call me Horseshit because I make horses fly! Every project needs visual punch, and I deliver frames of fire.", img: "/HARSHIT.jpeg", github: "https://github.com/harshit-vfx", linkedin: "https://www.linkedin.com/in/harshit-kumar-382543406?utm_source=share_via&utm_content=profile&utm_medium=member_android", insta: "https://instagram.com/horseshit_anim" }
+    ];
+
+    // ========== MODAL ==========
+    const modal = document.getElementById('modal');
+    const pName = document.getElementById('pname');
+    const pRole = document.getElementById('prole');
+    const pDesc = document.getElementById('pdesc');
+    const pImg = document.getElementById('pimg');
+    const githubAnchor = document.getElementById('githubLink');
+    const linkedinAnchor = document.getElementById('linkedinLink');
+    const instagramAnchor = document.getElementById('instagramLink');
+
+    function openProfile(name, role, desc, imgUrl, githubUrl, linkedinUrl, instaUrl) {
+        pName.innerText = name;
+        pRole.innerText = role;
+        pDesc.innerText = desc;
+        pImg.src = imgUrl;
+        githubAnchor.href = githubUrl;
+        linkedinAnchor.href = linkedinUrl;
+        instagramAnchor.href = instaUrl;
+        modal.style.display = 'flex';
+    }
+
+    function closeProfile() {
+        modal.style.display = 'none';
+    }
+
+    document.getElementById('closeModalBtn').addEventListener('click', closeProfile);
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) closeProfile();
+    });
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.style.display === 'flex') closeProfile();
+    });
+
+    const teamRows = document.querySelectorAll('.team-row');
+    teamRows.forEach((row, idx) => {
+        row.addEventListener('click', () => {
+            const m = members[idx];
+            openProfile(m.name, m.role, m.desc, m.img, m.github, m.linkedin, m.insta);
+        });
+    });
+
+    // ========== PAGE TRANSITION ==========
+    const transitionOverlay = document.getElementById('transitionOverlay');
+
+    function navigateToPage(url) {
+        transitionOverlay.classList.add('active');
+        setTimeout(() => {
+            window.location.href = url;
+        }, 500);
+    }
+
+    const navLinks = document.querySelectorAll('.menu-item');
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const href = link.getAttribute('href');
+            if (href && href !== '#') {
+                navigateToPage(href);
+            }
+        });
+    });
+
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            transitionOverlay.classList.remove('active');
+        }, 100);
+    });
+</script>
+
+</body>
+</html>

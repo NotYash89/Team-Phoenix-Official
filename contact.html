@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Team Phoenix | Contact</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        background: #0a0000;
+        font-family: 'Poppins', sans-serif;
+        overflow-x: hidden;
+        min-height: 100vh;
+    }
+
+    .bg-gradient {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 20% 50%, #3a0000, #0a0000);
+        z-index: -2;
+    }
+
+    #particleCanvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #2a0000; }
+    ::-webkit-scrollbar-thumb { background: #ff6a4b; border-radius: 12px; }
+
+    /* Header */
+    .top-bar {
+        position: relative;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0,0,0,0.4);
+        backdrop-filter: blur(20px);
+        z-index: 100;
+        padding: 12px 50px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(255,179,71,0.3);
+    }
+
+    .logo {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 24px;
+        font-weight: 800;
+        background: linear-gradient(135deg, #fff1b5, #ffbc6e);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    .back-home {
+        background: rgba(255,179,71,0.15);
+        padding: 6px 20px;
+        border-radius: 40px;
+        text-decoration: none;
+        color: #ffb347;
+        transition: 0.3s;
+        border: 1px solid rgba(255,179,71,0.3);
+        font-size: 14px;
+    }
+    .back-home:hover {
+        background: #ffb347;
+        color: #1a0000;
+        transform: scale(1.02);
+    }
+
+    .golden-section {
+        position: relative;
+        background: transparent;
+    }
+
+    .golden-line {
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #ffb347, #ff6b4a, #ffb347, transparent);
+        margin: 0 50px;
+        opacity: 0.6;
+    }
+
+    .hamburger-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 50px 0 50px;
+    }
+
+    .menu-icon {
+        font-size: 26px;
+        cursor: pointer;
+        transition: 0.2s;
+        background: rgba(255,179,71,0.15);
+        width: 42px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        color: #ffb347;
+        border: 1px solid rgba(255,179,71,0.3);
+    }
+
+    .menu-icon:hover {
+        background: #ffb347;
+        color: #2c0000;
+        transform: rotate(90deg);
+    }
+
+    .page-indicator {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 16px;
+        font-weight: 600;
+        background: linear-gradient(135deg, #fff1b5, #ffbc6e);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        letter-spacing: 2px;
+    }
+
+    /* Slider Menu */
+    .slider-menu {
+        position: fixed;
+        top: 0;
+        left: -280px;
+        width: 280px;
+        height: 100%;
+        background: linear-gradient(180deg, #1a0a0a, #2d0909);
+        backdrop-filter: blur(20px);
+        z-index: 1001;
+        transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        padding: 30px 0;
+        border-right: 2px solid #ffb347;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .slider-menu.open { left: 0; }
+    .menu-logo { text-align: center; padding: 25px 20px; border-bottom: 1px solid rgba(255,179,71,0.3); }
+    .menu-logo img { width: 70px; margin-bottom: 10px; }
+    .menu-logo h3 { font-family: 'Orbitron', sans-serif; font-size: 16px; background: linear-gradient(135deg, #fff1b5, #ffbc6e); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .menu-items { flex: 1; padding: 0 20px; }
+    .menu-item { display: flex; align-items: center; gap: 15px; padding: 12px 20px; margin: 5px 0; border-radius: 40px; color: #fff; text-decoration: none; font-weight: 500; }
+    .menu-item i { width: 24px; color: #ffb347; }
+    .menu-item:hover { background: rgba(255,179,71,0.15); transform: translateX(5px); }
+    .menu-footer { padding: 20px; border-top: 1px solid rgba(255,179,71,0.3); margin-top: auto; }
+    .member-login-btn { display: flex; align-items: center; gap: 10px; padding: 10px 15px; background: rgba(255,179,71,0.15); border-radius: 40px; text-decoration: none; }
+    .member-login-btn span { color: #ffb347; }
+    .menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(3px); z-index: 1000; display: none; }
+    .menu-overlay.show { display: block; }
+    body.menu-open { overflow: hidden; }
+
+    .container { position: relative; z-index: 5; padding-top: 30px; min-height: 100vh; max-width: 1200px; margin: 0 auto; }
+    .hero { text-align: center; padding: 30px 20px 40px; }
+    .hero h1 { font-family: 'Orbitron', sans-serif; font-size: 48px; background: linear-gradient(135deg, #fff1b5, #ffbc6e, #ff6b4a); -webkit-background-clip: text; background-clip: text; color: transparent; letter-spacing: 4px; }
+    .hero p { color: #ffb347; letter-spacing: 3px; font-size: 12px; margin-top: 10px; }
+
+    .contact-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 40px;
+        padding: 20px 40px 60px;
+    }
+
+    .form-section {
+        flex: 1;
+        min-width: 300px;
+        background: rgba(255,255,255,0.03);
+        backdrop-filter: blur(12px);
+        border-radius: 30px;
+        border: 1px solid rgba(255,179,71,0.2);
+        padding: 35px;
+    }
+
+    .form-section h2 {
+        color: #ffb347;
+        font-size: 24px;
+        margin-bottom: 25px;
+        font-family: 'Orbitron', sans-serif;
+        text-align: center;
+    }
+
+    .input-group {
+        margin-bottom: 20px;
+    }
+
+    .input-group input, .input-group textarea {
+        width: 100%;
+        padding: 14px 18px;
+        background: rgba(0,0,0,0.5);
+        border: 1px solid rgba(255,179,71,0.3);
+        border-radius: 15px;
+        color: white;
+        font-family: 'Poppins', sans-serif;
+        transition: 0.3s;
+    }
+
+    .input-group input:focus, .input-group textarea:focus {
+        outline: none;
+        border-color: #ffb347;
+    }
+
+    .input-group textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    .submit-btn {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(135deg, #ffb347, #ff6b4a);
+        border: none;
+        border-radius: 30px;
+        color: #2c0000;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 16px;
+        transition: 0.3s;
+    }
+
+    .submit-btn:hover {
+        transform: scale(1.02);
+    }
+
+    .social-section {
+        flex: 1;
+        min-width: 250px;
+        background: rgba(255,255,255,0.03);
+        backdrop-filter: blur(12px);
+        border-radius: 30px;
+        border: 1px solid rgba(255,179,71,0.2);
+        padding: 35px;
+        text-align: center;
+    }
+
+    .social-section h2 {
+        color: #ffb347;
+        font-size: 24px;
+        margin-bottom: 25px;
+        font-family: 'Orbitron', sans-serif;
+    }
+
+    .social-icons {
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+        flex-wrap: wrap;
+    }
+
+    .social-circle {
+        width: 65px;
+        height: 65px;
+        background: rgba(255,179,71,0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.3s;
+        text-decoration: none;
+        border: 1px solid rgba(255,179,71,0.3);
+    }
+
+    .social-circle i {
+        font-size: 28px;
+        color: #ffb347;
+    }
+
+    .social-circle:hover {
+        background: #ffb347;
+        transform: translateY(-5px);
+    }
+
+    .social-circle:hover i {
+        color: #2c0000;
+    }
+
+    .footer {
+        text-align: center;
+        padding: 30px;
+        border-top: 1px solid rgba(255,179,71,0.2);
+        background: rgba(0,0,0,0.3);
+        color: #ffb347;
+        font-size: 12px;
+    }
+
+    .success-msg {
+        text-align: center;
+        padding: 12px;
+        background: rgba(76, 175, 80, 0.2);
+        border: 1px solid #4caf50;
+        border-radius: 15px;
+        color: #4caf50;
+        margin-top: 20px;
+        display: none;
+    }
+
+    .error-msg {
+        text-align: center;
+        padding: 12px;
+        background: rgba(255, 77, 77, 0.2);
+        border: 1px solid #ff4d4d;
+        border-radius: 15px;
+        color: #ff4d4d;
+        margin-top: 20px;
+        display: none;
+    }
+
+    @media (max-width: 768px) {
+        .top-bar { padding: 10px 25px; }
+        .golden-line { margin: 0 25px; }
+        .hamburger-row { padding: 5px 25px 0 25px; }
+        .contact-wrapper { padding: 20px; }
+        .hero h1 { font-size: 32px; }
+    }
+</style>
+</head>
+<body>
+
+<div class="slider-menu" id="sliderMenu">
+    <div class="menu-logo">
+        <img src="Glogo.png" alt="Logo">
+        <h3>TEAM PHOENIX</h3>
+    </div>
+    <div class="menu-items">
+        <a href="index.html" class="menu-item"><i class="fas fa-home"></i><span>HOME</span></a>
+        <a href="team.html" class="menu-item"><i class="fas fa-users"></i><span>TEAM</span></a>
+        <a href="projects.html" class="menu-item"><i class="fas fa-rocket"></i><span>PROJECTS</span></a>
+        <a href="achievements.html" class="menu-item"><i class="fas fa-trophy"></i><span>ACHIEVEMENTS</span></a>
+        <a href="contact.html" class="menu-item"><i class="fas fa-envelope"></i><span>CONTACT US</span></a>
+    </div>
+    <div class="menu-footer">
+        <a href="admin.html" class="member-login-btn">
+            <i class="fas fa-user-shield"></i>
+            <span>MEMBER LOGIN</span>
+        </a>
+    </div>
+</div>
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<div class="bg-gradient"></div>
+<canvas id="particleCanvas"></canvas>
+
+<div class="top-bar">
+    <div class="logo">🐦‍🔥 TEAM PHOENIX</div>
+    <a href="index.html" class="back-home">← BACK TO HOME</a>
+</div>
+
+<div class="golden-section">
+    <div class="golden-line"></div>
+    <div class="hamburger-row">
+        <div class="menu-icon" id="menuIcon">☰</div>
+        <div class="page-indicator">✦ CONTACT US ✦</div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="hero">
+        <h1>📬 LET'S CONNECT</h1>
+        <p>✦ WE'D LOVE TO HEAR FROM YOU ✦</p>
+    </div>
+
+    <div class="contact-wrapper">
+        <!-- FORM SECTION -->
+        <div class="form-section">
+            <h2><i class="fas fa-paper-plane"></i> SEND A MESSAGE</h2>
+            <form id="contactForm">
+                <div class="input-group">
+                    <input type="text" id="name" placeholder="Your Name" required>
+                </div>
+                <div class="input-group">
+                    <input type="email" id="email" placeholder="Your Email" required>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="subject" placeholder="Subject">
+                </div>
+                <div class="input-group">
+                    <textarea id="message" placeholder="Your Message..." required></textarea>
+                </div>
+                <button type="button" class="submit-btn" id="sendBtn">✨ SEND MESSAGE ✨</button>
+                <div id="successMsg" class="success-msg">✅ Message sent successfully!</div>
+                <div id="errorMsg" class="error-msg">❌ Failed to send. Please try again.</div>
+            </form>
+        </div>
+
+        <!-- SOCIAL SECTION -->
+        <div class="social-section">
+            <h2><i class="fas fa-share-alt"></i> FOLLOW US</h2>
+            <div class="social-icons">
+                <a href="#" class="social-circle"><i class="fab fa-github"></i></a>
+                <a href="#" class="social-circle"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" class="social-circle"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="social-circle"><i class="fab fa-discord"></i></a>
+                <a href="#" class="social-circle"><i class="fab fa-twitter"></i></a>
+            </div>
+            <p style="color: #ccc; margin-top: 25px; font-size: 13px;">Connect with us on social media for updates, behind-the-scenes, and more!</p>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <p>✨ TEAM PHOENIX — RISING FROM THE ASHES ✨</p>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAeHLD5WT6lKFzvhk5rPiAycn8oHpP1l0I",
+        authDomain: "team-phoenix-admin-f27e6.firebaseapp.com",
+        projectId: "team-phoenix-admin-f27e6",
+        storageBucket: "team-phoenix-admin-f27e6.firebasestorage.app",
+        messagingSenderId: "604760212282",
+        appId: "1:604760212282:web:616ff666222e41db900603"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // ========== PARTICLE BACKGROUND ==========
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    function createParticles() {
+        particles = [];
+        for (let i = 0; i < 80; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 3 + 1,
+                speedX: (Math.random() - 0.5) * 0.5,
+                speedY: (Math.random() - 0.5) * 0.3,
+                color: `rgba(255, ${Math.random() * 100 + 50}, 50, ${Math.random() * 0.3 + 0.1})`
+            });
+        }
+    }
+
+    function animateParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+            p.x += p.speedX;
+            p.y += p.speedY;
+            if (p.x < 0) p.x = canvas.width;
+            if (p.x > canvas.width) p.x = 0;
+            if (p.y < 0) p.y = canvas.height;
+            if (p.y > canvas.height) p.y = 0;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fillStyle = p.color;
+            ctx.fill();
+        });
+        requestAnimationFrame(animateParticles);
+    }
+
+    window.addEventListener('resize', () => {
+        resizeCanvas();
+        createParticles();
+    });
+    resizeCanvas();
+    createParticles();
+    animateParticles();
+
+    // ========== SLIDER MENU ==========
+    const menuIcon = document.getElementById('menuIcon');
+    const sliderMenu = document.getElementById('sliderMenu');
+    const menuOverlay = document.getElementById('menuOverlay');
+
+    function openMenu() {
+        sliderMenu.classList.add('open');
+        menuOverlay.classList.add('show');
+        document.body.classList.add('menu-open');
+    }
+
+    function closeMenu() {
+        sliderMenu.classList.remove('open');
+        menuOverlay.classList.remove('show');
+        document.body.classList.remove('menu-open');
+    }
+
+    if (menuIcon) {
+        menuIcon.addEventListener('click', (e) => {
+            e.stopPropagation();
+            sliderMenu.classList.contains('open') ? closeMenu() : openMenu();
+        });
+    }
+
+    if (menuOverlay) {
+        menuOverlay.addEventListener('click', closeMenu);
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && sliderMenu.classList.contains('open')) closeMenu();
+    });
+
+    // ========== SEND MESSAGE TO FIREBASE ==========
+    const sendBtn = document.getElementById('sendBtn');
+    const successMsg = document.getElementById('successMsg');
+    const errorMsg = document.getElementById('errorMsg');
+
+    sendBtn.addEventListener('click', async () => {
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const subject = document.getElementById('subject').value;
+        const message = document.getElementById('message').value;
+
+        if (!name || !email || !message) {
+            errorMsg.style.display = 'block';
+            errorMsg.textContent = '❌ Please fill in all required fields!';
+            setTimeout(() => { errorMsg.style.display = 'none'; }, 3000);
+            return;
+        }
+
+        try {
+            await addDoc(collection(db, 'contact_messages'), {
+                name: name,
+                email: email,
+                subject: subject || 'No subject',
+                message: message,
+                timestamp: new Date().toISOString(),
+                read: false
+            });
+
+            successMsg.style.display = 'block';
+            document.getElementById('contactForm').reset();
+            setTimeout(() => { successMsg.style.display = 'none'; }, 4000);
+        } catch (error) {
+            errorMsg.style.display = 'block';
+            errorMsg.textContent = '❌ Error: ' + error.message;
+            setTimeout(() => { errorMsg.style.display = 'none'; }, 4000);
+        }
+    });
+</script>
+
+</body>
+</html>
