@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Team Phoenix | The Collective</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background: linear-gradient(
+            -45deg,
+            #140000,
+            #2b0000,
+            #4a0000,
+            #1f0000,
+            #5c0a0a
+        );
+        background-size: 500% 500%;
+        animation: gradientMove 16s ease-in-out infinite;
+        font-family: 'Poppins', sans-serif;
+        color: #fff;
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+    @keyframes gradientMove {
+        0%   { background-position: 0% 50%; }
+        20%  { background-position: 40% 80%; }
+        40%  { background-position: 80% 40%; }
+        60%  { background-position: 60% 0%; }
+        80%  { background-position: 20% 30%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    body::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(circle at 30% 30%, rgba(255,80,40,0.15), transparent 40%),
+                    radial-gradient(circle at 70% 70%, rgba(255,0,0,0.1), transparent 50%);
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    #particleCanvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #2a0000;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #ff6a4b;
+        border-radius: 12px;
+    }
+
+    /* ========== NAVBAR ========== */
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 60px;
+        background: rgba(0,0,0,0.3);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(255,179,71,0.3);
+        position: relative;
+        z-index: 100;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .logo img {
+        height: 60px;
+        filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+        transition: transform 0.2s;
+    }
+    .logo img:hover {
+        transform: scale(1.02);
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 35px;
+        flex-wrap: wrap;
+    }
+
+    .nav-links a {
+        color: #ffb347;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 1px;
+        transition: 0.3s;
+    }
+
+    .nav-links a:hover {
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .mobile-menu-btn {
+        display: none;
+        font-size: 28px;
+        cursor: pointer;
+        background: rgba(255,80,40,0.2);
+        width: 48px;
+        height: 48px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        color: #ffb347;
+    }
+
+    /* ========== HERO SECTION ========== */
+    .hero {
+        text-align: center;
+        padding: 60px 20px 40px;
+        position: relative;
+        z-index: 5;
+    }
+
+    .hero-badge {
+        display: inline-block;
+        color: #ffb347;
+        font-size: 11px;
+        letter-spacing: 4px;
+        margin-bottom: 20px;
+        padding: 5px 14px;
+        border: 1px solid rgba(255,179,71,0.3);
+        border-radius: 40px;
+        background: rgba(255,179,71,0.05);
+    }
+
+    .hero h1 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 56px;
+        background: linear-gradient(135deg, #fff1b5, #ffbc6e, #ff6b4a);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        letter-spacing: 4px;
+        margin-bottom: 15px;
+    }
+
+    .hero-divider {
+        width: 80px;
+        height: 2px;
+        background: linear-gradient(90deg, #ffb347, #ff6b4a);
+        margin: 20px auto 25px;
+    }
+
+    .hero p {
+        color: #ccc;
+        font-size: 14px;
+        letter-spacing: 2px;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    /* ========== CIRCLE AVATAR GRID ========== */
+    .team-section {
+        padding: 40px 60px 80px;
+        position: relative;
+        z-index: 5;
+    }
+
+    .team-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 50px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .team-member {
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        width: 140px;
+        position: relative;
+    }
+
+    .team-member:hover {
+        transform: translateY(-10px);
+    }
+
+    .avatar-circle {
+        position: relative;
+        width: 160px;
+        height: 160px;
+        margin: 0 auto 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Rotating Fire Ring */
+    .ring-border {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 2px solid transparent;
+        border-top-color: #ffb347;
+        border-right-color: #ff6b4a;
+        animation: spin 4s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .avatar-inner {
+        width: 140px;
+        height: 140px;
+        background: linear-gradient(135deg, rgba(255,179,71,0.15), rgba(255,107,74,0.05));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(4px);
+        border: 1px solid rgba(255,179,71,0.3);
+        transition: 0.3s;
+        overflow: hidden;
+    }
+
+    .team-member:hover .avatar-inner {
+        background: linear-gradient(135deg, rgba(255,179,71,0.25), rgba(255,107,74,0.15));
+        border-color: rgba(255,179,71,0.6);
+    }
+
+    .member-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: 0.3s;
+    }
+
+    .team-member:hover .member-img {
+        transform: scale(1.05);
+    }
+
+    .member-name {
+        font-size: 18px;
+        font-weight: 700;
+        font-family: 'Orbitron', sans-serif;
+        background: linear-gradient(135deg, #fff1b5, #ffbc6e);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin-bottom: 5px;
+    }
+
+    .member-real {
+        font-size: 10px;
+        color: #ffb347;
+        opacity: 0.7;
+        margin-bottom: 8px;
+    }
+
+    .member-role {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 9px;
+        font-weight: 700;
+        background: rgba(255,179,71,0.15);
+        color: #ffb347;
+        border: 1px solid rgba(255,179,71,0.3);
+        transition: 0.3s;
+    }
+
+    .team-member:hover .member-role {
+        background: rgba(255,179,71,0.25);
+        transform: scale(1.05);
+    }
+
+    .team-member:hover .ring-border {
+        animation: spin 2s linear infinite;
+        border-top-color: #ff6b4a;
+        border-right-color: #ffb347;
+        box-shadow: 0 0 15px rgba(255,107,74,0.4);
+    }
+
+    /* ========== MODAL ========== */
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(5px);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .modal-content {
+        background: linear-gradient(145deg, #1a0000, #0a0000);
+        width: 550px;
+        max-width: 90vw;
+        border-radius: 24px;
+        position: relative;
+        animation: modalReveal 0.3s ease;
+        border: 1px solid rgba(220, 20, 60, 0.4);
+        overflow: hidden;
+    }
+
+    @keyframes modalReveal {
+        from { opacity: 0; transform: scale(0.95); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    .modal-header {
+        padding: 30px;
+        text-align: center;
+        background: linear-gradient(135deg, #8b0000, #dc143c);
+    }
+
+    .modal-avatar {
+        width: 100px;
+        height: 100px;
+        margin: 0 auto 15px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 3px solid #ffb347;
+    }
+
+    .modal-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .modal-name {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 28px;
+        color: #fff1b5;
+        margin-bottom: 5px;
+    }
+
+    .modal-role {
+        color: #ffb347;
+        font-size: 14px;
+    }
+
+    .modal-body {
+        padding: 25px;
+    }
+
+    .modal-desc {
+        color: #ddd;
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .skills-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 20px;
+    }
+
+    .skill-tag {
+        background: rgba(220,20,60,0.15);
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 11px;
+        color: #ffb347;
+        border: 1px solid rgba(220,20,60,0.3);
+    }
+
+    .modal-social {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        padding-top: 15px;
+        border-top: 1px solid rgba(220,20,60,0.2);
+    }
+
+    .modal-social a {
+        width: 40px;
+        height: 40px;
+        background: rgba(220,20,60,0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.3s;
+        color: #ffb347;
+        font-size: 18px;
+    }
+
+    .modal-social a:hover {
+        background: #dc143c;
+        color: white;
+        transform: translateY(-3px);
+    }
+
+    .modal-close {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        font-size: 24px;
+        cursor: pointer;
+        color: white;
+        background: rgba(0,0,0,0.5);
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .footer {
+        text-align: center;
+        padding: 35px;
+        border-top: 1px solid rgba(255,165,80,0.3);
+        margin-top: 20px;
+        color: #ffb347;
+        font-size: 12px;
+    }
+
+    /* Slider Menu */
+    .slider-menu {
+        position: fixed;
+        top: 0;
+        left: -300px;
+        width: 300px;
+        height: 100%;
+        background: linear-gradient(180deg, #1a0a0a, #2d0909);
+        backdrop-filter: blur(20px);
+        z-index: 1001;
+        transition: left 0.4s;
+        padding: 30px 0;
+        border-right: 2px solid #ffb347;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .slider-menu.open { left: 0; }
+
+    .menu-logo {
+        text-align: center;
+        padding: 25px 20px;
+        border-bottom: 1px solid rgba(255,179,71,0.3);
+    }
+
+    .menu-logo img { width: 70px; margin-bottom: 10px; }
+    .menu-logo h3 { font-family: 'Orbitron', sans-serif; font-size: 16px; color: #ffb347; }
+
+    .menu-items { flex: 1; padding: 0 20px; }
+    .menu-item { display: flex; align-items: center; gap: 12px; padding: 12px 20px; border-radius: 40px; color: #fff; text-decoration: none; font-weight: 500; }
+    .menu-item i { width: 24px; color: #ffb347; }
+    .menu-item:hover { background: rgba(255,179,71,0.15); transform: translateX(5px); }
+
+    .menu-footer { padding: 20px; border-top: 1px solid rgba(255,179,71,0.3); }
+    .member-login-btn { display: flex; align-items: center; gap: 10px; padding: 10px 15px; background: rgba(255,179,71,0.15); border-radius: 40px; text-decoration: none; }
+    .member-login-btn span { color: #ffb347; }
+
+    .menu-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 1000;
+        display: none;
+    }
+    .menu-overlay.show { display: block; }
+    body.menu-open { overflow: hidden; }
+
+    @media (max-width: 768px) {
+        .navbar { padding: 15px 25px; }
+        .nav-links { display: none; }
+        .mobile-menu-btn { display: flex; }
+        .hero h1 { font-size: 36px; }
+        .team-section { padding: 30px 25px 60px; }
+        .team-grid { gap: 35px; }
+        .team-member { width: 110px; }
+        .avatar-circle { width: 100px; height: 100px; }
+        .avatar-inner { width: 85px; height: 85px; }
+        .member-name { font-size: 14px; }
+        .modal-content { width: 95vw; }
+    }
+</style>
+</head>
+<body>
+
+<!-- SLIDER MENU -->
+<div class="slider-menu" id="sliderMenu">
+    <div class="menu-logo">
+        <img src="Glogo.png" alt="Team Phoenix">
+        <h3>TEAM PHOENIX</h3>
+    </div>
+    <div class="menu-items">
+        <a href="index.html" class="menu-item"><i class="fas fa-home"></i><span>HOME</span></a>
+        <a href="team.html" class="menu-item"><i class="fas fa-users"></i><span>TEAM</span></a>
+        <a href="projects.html" class="menu-item"><i class="fas fa-rocket"></i><span>PROJECTS</span></a>
+        <a href="achievements.html" class="menu-item"><i class="fas fa-trophy"></i><span>ACHIEVEMENTS</span></a>
+        <a href="contact.html" class="menu-item"><i class="fas fa-envelope"></i><span>CONTACT US</span></a>
+    </div>
+    <div class="menu-footer">
+        <a href="admin.html" class="member-login-btn">
+            <i class="fas fa-user-shield"></i>
+            <span>ADMIN PANEL</span>
+        </a>
+    </div>
+</div>
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<!-- PARTICLES -->
+<canvas id="particleCanvas"></canvas>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="logo">
+        <img src="Assets/Glogo.png" alt="Team Phoenix Logo">
+    </div>
+    <div class="nav-links">
+        <a href="index.html">HOME</a>
+        <a href="team.html">TEAM</a>
+        <a href="projects.html">PROJECTS</a>
+        <a href="achievements.html">ACHIEVEMENTS</a>
+        <a href="contact.html">CONTACT</a>
+        <a href="admin.html">ADMIN</a>
+    </div>
+    <div class="mobile-menu-btn" id="menuIcon">☰</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-badge">✦ MEET THE TEAM ✦</div>
+    <h1>THE COLLECTIVE</h1>
+    <div class="hero-divider"></div>
+    <p>Six minds. One mission. Rising from the ashes, building the future.</p>
+</section>
+
+<!-- CIRCLE AVATAR GRID -->
+<section class="team-section">
+    <div class="team-grid" id="teamGrid">
+        <div style="text-align:center; color:#ffb347; padding:60px;">🔥 Loading team members...</div>
+    </div>
+</section>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <div class="modal-close" id="closeModalBtn">✖</div>
+        <div class="modal-header">
+            <div class="modal-avatar">
+                <img id="modalImg" src="" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div class="modal-name" id="modalName"></div>
+            <div class="modal-role" id="modalRole"></div>
+        </div>
+        <div class="modal-body">
+            <div class="modal-desc" id="modalDesc"></div>
+            <div class="skills-container" id="modalSkills"></div>
+            <div class="modal-social">
+                <a href="#" id="modalGithub" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="#" id="modalLinkedin" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" id="modalInstagram" target="_blank"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+    <p>✨ SIX MINDS. ONE MISSION. RISING FROM THE ASHES. ✨</p>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAeHLD5WT6lKFzvhk5rPiAycn8oHpP1l0I",
+        authDomain: "team-phoenix-admin-f27e6.firebaseapp.com",
+        projectId: "team-phoenix-admin-f27e6",
+        storageBucket: "team-phoenix-admin-f27e6.firebasestorage.app",
+        messagingSenderId: "604760212282",
+        appId: "1:604760212282:web:616ff666222e41db900603"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Particles
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    function createParticles() {
+        particles = [];
+        for (let i = 0; i < 100; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 3 + 1,
+                speedX: (Math.random() - 0.5) * 0.3,
+                speedY: (Math.random() - 0.5) * 0.2,
+                color: `rgba(255, ${Math.random() * 80 + 50}, 50, ${Math.random() * 0.4 + 0.1})`
+            });
+        }
+    }
+
+    function animateParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+            p.x += p.speedX;
+            p.y += p.speedY;
+            if (p.x < 0) p.x = canvas.width;
+            if (p.x > canvas.width) p.x = 0;
+            if (p.y < 0) p.y = canvas.height;
+            if (p.y > canvas.height) p.y = 0;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fillStyle = p.color;
+            ctx.fill();
+        });
+        requestAnimationFrame(animateParticles);
+    }
+
+    window.addEventListener('resize', () => { resizeCanvas(); createParticles(); });
+    resizeCanvas();
+    createParticles();
+    animateParticles();
+
+    // Slider Menu
+    const menuIcon = document.getElementById('menuIcon');
+    const sliderMenu = document.getElementById('sliderMenu');
+    const menuOverlay = document.getElementById('menuOverlay');
+
+    function openMenu() { sliderMenu.classList.add('open'); menuOverlay.classList.add('show'); document.body.classList.add('menu-open'); }
+    function closeMenu() { sliderMenu.classList.remove('open'); menuOverlay.classList.remove('show'); document.body.classList.remove('menu-open'); }
+    if (menuIcon) menuIcon.addEventListener('click', (e) => { e.stopPropagation(); sliderMenu.classList.contains('open') ? closeMenu() : openMenu(); });
+    if (menuOverlay) menuOverlay.addEventListener('click', closeMenu);
+
+    // Load Team Members
+    const teamGrid = document.getElementById('teamGrid');
+    const modal = document.getElementById('modal');
+    const modalImg = document.getElementById('modalImg');
+    const modalName = document.getElementById('modalName');
+    const modalRole = document.getElementById('modalRole');
+    const modalDesc = document.getElementById('modalDesc');
+    const modalSkills = document.getElementById('modalSkills');
+    const modalGithub = document.getElementById('modalGithub');
+    const modalLinkedin = document.getElementById('modalLinkedin');
+    const modalInstagram = document.getElementById('modalInstagram');
+
+    async function loadTeamMembers() {
+        try {
+            const querySnapshot = await getDocs(collection(db, 'team_members'));
+            const members = [];
+            querySnapshot.forEach(doc => {
+                members.push({ id: doc.id, ...doc.data() });
+            });
+            members.sort((a, b) => String(a.createdAt || '').localeCompare(String(b.createdAt || '')));
+            if (members.length === 0) {
+                teamGrid.innerHTML = '<div style="text-align: center; color: #ffb347; padding: 60px;">No team members yet. Check back soon!</div>';
+                return;
+            }
+
+            teamGrid.innerHTML = members.map(member => `
+                <div class="team-member" data-id="${member.id}">
+                    <div class="avatar-circle">
+                        <div class="ring-border"></div>
+                        <div class="avatar-inner">
+                            <img src="${member.image || ''}" alt="${member.realName || member.name}" class="member-img" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\\'font-size:50px;\\'>${member.avatar || '👤'}</div>'">
+                        </div>
+                    </div>
+                    <div class="member-name">${escapeHtml(member.realName || member.name)}</div>
+                    <div class="member-real">${escapeHtml(member.teamName || member.name || '')}</div>
+                    <div class="member-role">${escapeHtml(member.role)}</div>
+                </div>
+            `).join('');
+
+            document.querySelectorAll('.team-member').forEach((el, idx) => {
+                el.addEventListener('click', () => openModal(members[idx]));
+            });
+        } catch (error) {
+            console.error("Team members Firestore error:", error);
+            teamGrid.innerHTML = `<div style="text-align:center; color:#ff4d4d; padding:60px;">
+                Failed to load team members.<br><small>${escapeHtml(error?.code || error?.message || 'Unknown Firebase error')}</small>
+            </div>`;
+        }
+    }
+
+    function openModal(member) {
+        // Fix: Use the same image path as the card
+        const imageUrl = member.image || '';
+        modalImg.src = imageUrl;
+        
+        // Better error handling
+        modalImg.onerror = function() {
+            this.style.display = 'none';
+            // Show fallback emoji
+            this.parentElement.innerHTML = `<div style="font-size: 40px;">${member.avatar || '👤'}</div>`;
+        };
+        
+        modalImg.onload = function() {
+            this.style.display = 'block';
+        };
+        
+        modalName.textContent = member.realName || member.name;
+        modalRole.textContent = member.role;
+        modalDesc.textContent = member.desc || 'No description available.';
+        
+        modalSkills.innerHTML = (member.skills || []).map(skill => 
+            `<span class="skill-tag">${escapeHtml(skill)}</span>`
+        ).join('');
+        
+        modalGithub.href = member.github || '#';
+        modalLinkedin.href = member.linkedin || '#';
+        modalInstagram.href = member.insta || '#';
+        
+        modal.style.display = 'flex';
+    }
+    function closeModal() { modal.style.display = 'none'; }
+    document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal.style.display === 'flex') closeModal(); });
+
+    function escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    loadTeamMembers();
+</script>
+
+</body>
+</html>

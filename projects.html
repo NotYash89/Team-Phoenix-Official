@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Team Phoenix | Projects</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background: linear-gradient(
+            -45deg,
+            #140000,
+            #2b0000,
+            #4a0000,
+            #1f0000,
+            #5c0a0a
+        );
+        background-size: 500% 500%;
+        animation: gradientMove 16s ease-in-out infinite;
+        font-family: 'Poppins', sans-serif;
+        color: #fff;
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+    @keyframes gradientMove {
+        0%   { background-position: 0% 50%; }
+        20%  { background-position: 40% 80%; }
+        40%  { background-position: 80% 40%; }
+        60%  { background-position: 60% 0%; }
+        80%  { background-position: 20% 30%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    body::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(circle at 30% 30%, rgba(255,80,40,0.15), transparent 40%),
+                    radial-gradient(circle at 70% 70%, rgba(255,0,0,0.1), transparent 50%);
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    #particleCanvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #2a0000;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #ff6a4b;
+        border-radius: 12px;
+    }
+
+    /* ========== NAVBAR ========== */
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 60px;
+        background: rgba(0,0,0,0.3);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(255,179,71,0.3);
+        position: relative;
+        z-index: 100;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .logo img {
+        height: 60px;
+        filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+        transition: transform 0.2s;
+    }
+    .logo img:hover {
+        transform: scale(1.02);
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 35px;
+        flex-wrap: wrap;
+    }
+
+    .nav-links a {
+        color: #ffb347;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 1px;
+        transition: 0.3s;
+    }
+
+    .nav-links a:hover {
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .mobile-menu-btn {
+        display: none;
+        font-size: 28px;
+        cursor: pointer;
+        background: rgba(255,80,40,0.2);
+        width: 48px;
+        height: 48px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        color: #ffb347;
+    }
+
+    /* ========== HERO SECTION ========== */
+    .hero {
+        text-align: center;
+        padding: 60px 20px 40px;
+        position: relative;
+        z-index: 5;
+    }
+
+    .hero-badge {
+        display: inline-block;
+        color: #ffb347;
+        font-size: 11px;
+        letter-spacing: 4px;
+        margin-bottom: 20px;
+        padding: 5px 14px;
+        border: 1px solid rgba(255,179,71,0.3);
+        border-radius: 40px;
+        background: rgba(255,179,71,0.05);
+    }
+
+    .hero h1 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 56px;
+        background: linear-gradient(135deg, #fff1b5, #ffbc6e, #ff6b4a);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        letter-spacing: 4px;
+        margin-bottom: 15px;
+    }
+
+    .hero-divider {
+        width: 80px;
+        height: 2px;
+        background: linear-gradient(90deg, #ffb347, #ff6b4a);
+        margin: 20px auto 25px;
+    }
+
+    .hero p {
+        color: #ccc;
+        font-size: 14px;
+        letter-spacing: 2px;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    /* ========== CIRCLE AVATAR GRID ========== */
+    .team-section {
+        padding: 40px 60px 80px;
+        position: relative;
+        z-index: 5;
+    }
+
+    .team-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 50px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .team-member {
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        width: 140px;
+        position: relative;
+    }
+
+    .team-member:hover {
+        transform: translateY(-10px);
+    }
+
+    .avatar-circle {
+        position: relative;
+        width: 160px;
+        height: 160px;
+        margin: 0 auto 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Rotating Fire Ring */
+    .ring-border {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 2px solid transparent;
+        border-top-color: #ffb347;
+        border-right-color: #ff6b4a;
+        animation: spin 4s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .avatar-inner {
+        width: 140px;
+        height: 140px;
+        background: linear-gradient(135deg, rgba(255,179,71,0.15), rgba(255,107,74,0.05));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(4px);
+        border: 1px solid rgba(255,179,71,0.3);
+        transition: 0.3s;
+        overflow: hidden;
+    }
+
+    .team-member:hover .avatar-inner {
+        background: linear-gradient(135deg, rgba(255,179,71,0.25), rgba(255,107,74,0.15));
+        border-color: rgba(255,179,71,0.6);
+    }
+
+    .member-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: 0.3s;
+    }
+
+    .team-member:hover .member-img {
+        transform: scale(1.05);
+    }
+
+    .member-name {
+        font-size: 18px;
+        font-weight: 700;
+        font-family: 'Orbitron', sans-serif;
+        background: linear-gradient(135deg, #fff1b5, #ffbc6e);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin-bottom: 5px;
+    }
+
+    .member-real {
+        font-size: 10px;
+        color: #ffb347;
+        opacity: 0.7;
+        margin-bottom: 8px;
+    }
+
+    .member-role {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 9px;
+        font-weight: 700;
+        background: rgba(255,179,71,0.15);
+        color: #ffb347;
+        border: 1px solid rgba(255,179,71,0.3);
+        transition: 0.3s;
+    }
+
+    .team-member:hover .member-role {
+        background: rgba(255,179,71,0.25);
+        transform: scale(1.05);
+    }
+
+    .team-member:hover .ring-border {
+        animation: spin 2s linear infinite;
+        border-top-color: #ff6b4a;
+        border-right-color: #ffb347;
+        box-shadow: 0 0 15px rgba(255,107,74,0.4);
+    }
+
+    /* ========== MODAL ========== */
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(5px);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .modal-content {
+        background: linear-gradient(145deg, #1a0000, #0a0000);
+        width: 550px;
+        max-width: 90vw;
+        border-radius: 24px;
+        position: relative;
+        animation: modalReveal 0.3s ease;
+        border: 1px solid rgba(220, 20, 60, 0.4);
+        overflow: hidden;
+    }
+
+    @keyframes modalReveal {
+        from { opacity: 0; transform: scale(0.95); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    .modal-header {
+        padding: 30px;
+        text-align: center;
+        background: linear-gradient(135deg, #8b0000, #dc143c);
+    }
+
+    .modal-avatar {
+        width: 100px;
+        height: 100px;
+        margin: 0 auto 15px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 3px solid #ffb347;
+    }
+
+    .modal-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .modal-name {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 28px;
+        color: #fff1b5;
+        margin-bottom: 5px;
+    }
+
+    .modal-role {
+        color: #ffb347;
+        font-size: 14px;
+    }
+
+    .modal-body {
+        padding: 25px;
+    }
+
+    .modal-desc {
+        color: #ddd;
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .skills-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 20px;
+    }
+
+    .skill-tag {
+        background: rgba(220,20,60,0.15);
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 11px;
+        color: #ffb347;
+        border: 1px solid rgba(220,20,60,0.3);
+    }
+
+    .modal-social {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        padding-top: 15px;
+        border-top: 1px solid rgba(220,20,60,0.2);
+    }
+
+    .modal-social a {
+        width: 40px;
+        height: 40px;
+        background: rgba(220,20,60,0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.3s;
+        color: #ffb347;
+        font-size: 18px;
+    }
+
+    .modal-social a:hover {
+        background: #dc143c;
+        color: white;
+        transform: translateY(-3px);
+    }
+
+    .modal-close {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        font-size: 24px;
+        cursor: pointer;
+        color: white;
+        background: rgba(0,0,0,0.5);
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .footer {
+        text-align: center;
+        padding: 35px;
+        border-top: 1px solid rgba(255,165,80,0.3);
+        margin-top: 20px;
+        color: #ffb347;
+        font-size: 12px;
+    }
+
+    /* Slider Menu */
+    .slider-menu {
+        position: fixed;
+        top: 0;
+        left: -300px;
+        width: 300px;
+        height: 100%;
+        background: linear-gradient(180deg, #1a0a0a, #2d0909);
+        backdrop-filter: blur(20px);
+        z-index: 1001;
+        transition: left 0.4s;
+        padding: 30px 0;
+        border-right: 2px solid #ffb347;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .slider-menu.open { left: 0; }
+
+    .menu-logo {
+        text-align: center;
+        padding: 25px 20px;
+        border-bottom: 1px solid rgba(255,179,71,0.3);
+    }
+
+    .menu-logo img { width: 70px; margin-bottom: 10px; }
+    .menu-logo h3 { font-family: 'Orbitron', sans-serif; font-size: 16px; color: #ffb347; }
+
+    .menu-items { flex: 1; padding: 0 20px; }
+    .menu-item { display: flex; align-items: center; gap: 12px; padding: 12px 20px; border-radius: 40px; color: #fff; text-decoration: none; font-weight: 500; }
+    .menu-item i { width: 24px; color: #ffb347; }
+    .menu-item:hover { background: rgba(255,179,71,0.15); transform: translateX(5px); }
+
+    .menu-footer { padding: 20px; border-top: 1px solid rgba(255,179,71,0.3); }
+    .member-login-btn { display: flex; align-items: center; gap: 10px; padding: 10px 15px; background: rgba(255,179,71,0.15); border-radius: 40px; text-decoration: none; }
+    .member-login-btn span { color: #ffb347; }
+
+    .menu-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 1000;
+        display: none;
+    }
+    .menu-overlay.show { display: block; }
+    body.menu-open { overflow: hidden; }
+
+    @media (max-width: 768px) {
+        .navbar { padding: 15px 25px; }
+        .nav-links { display: none; }
+        .mobile-menu-btn { display: flex; }
+        .hero h1 { font-size: 36px; }
+        .team-section { padding: 30px 25px 60px; }
+        .team-grid { gap: 35px; }
+        .team-member { width: 110px; }
+        .avatar-circle { width: 100px; height: 100px; }
+        .avatar-inner { width: 85px; height: 85px; }
+        .member-name { font-size: 14px; }
+        .modal-content { width: 95vw; }
+    }
+
+/* ================= PROJECT MISSION LOG ================= */
+.project-section {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 10px 45px 70px;
+    position: relative;
+    z-index: 5;
+}
+
+.project-intro {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 30px;
+    margin-bottom: 35px;
+}
+
+.project-intro-copy .eyebrow {
+    color: #ffb347;
+    font-size: 10px;
+    letter-spacing: 3px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.project-intro-copy h2 {
+    font-family: 'Orbitron', sans-serif;
+    color: #fff1b5;
+    font-size: clamp(22px, 3vw, 34px);
+    letter-spacing: 1px;
+}
+
+.project-intro-copy p {
+    color: #bbb;
+    font-size: 12px;
+    margin-top: 8px;
+    max-width: 620px;
+    line-height: 1.7;
+}
+
+.project-count {
+    min-width: 120px;
+    padding: 13px 18px;
+    border: 1px solid rgba(255,179,71,0.28);
+    border-radius: 14px;
+    background: rgba(20,0,0,0.38);
+    text-align: center;
+}
+.project-count strong {
+    display: block;
+    color: #ffb347;
+    font: 800 24px 'Orbitron', sans-serif;
+}
+.project-count span {
+    color: #aaa;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+}
+
+/* The project board is a timeline, not a set of cards. */
+.mission-board {
+    position: relative;
+    padding-left: 72px;
+}
+.mission-board::before {
+    content: '';
+    position: absolute;
+    left: 27px;
+    top: 10px;
+    bottom: 10px;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, rgba(255,179,71,0.45) 8%, rgba(255,179,71,0.45) 92%, transparent);
+}
+
+.mission-group {
+    margin-bottom: 42px;
+}
+.mission-group:last-child { margin-bottom: 0; }
+
+.mission-group-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 16px -72px;
+    position: relative;
+}
+.mission-group-heading::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(255,179,71,0.13);
+}
+.status-orb {
+    width: 55px;
+    height: 55px;
+    flex: 0 0 55px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: #220707;
+    border: 1px solid rgba(255,179,71,0.5);
+    box-shadow: 0 0 0 7px rgba(255,179,71,0.035);
+    color: #ffb347;
+    position: relative;
+    z-index: 2;
+}
+.mission-group-heading h3 {
+    color: #fff1b5;
+    font: 700 13px 'Orbitron', sans-serif;
+    letter-spacing: 1.5px;
+}
+.mission-group-heading small {
+    color: #777;
+    font-size: 10px;
+    margin-left: 2px;
+}
+
+.mission-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.mission-entry {
+    position: relative;
+    display: grid;
+    grid-template-columns: 62px minmax(180px, 1.1fr) minmax(220px, 1.6fr) minmax(130px, .8fr) auto;
+    align-items: center;
+    gap: 18px;
+    min-height: 92px;
+    padding: 15px 18px 15px 0;
+    border-bottom: 1px solid rgba(255,179,71,0.12);
+    background: linear-gradient(90deg, rgba(255,179,71,0.025), transparent 75%);
+    cursor: pointer;
+    transition: .3s ease;
+}
+.mission-entry::before {
+    content: '';
+    position: absolute;
+    left: -50px;
+    top: 50%;
+    width: 10px;
+    height: 10px;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    background: #ffb347;
+    box-shadow: 0 0 0 5px rgba(255,179,71,0.07), 0 0 15px rgba(255,100,40,0.3);
+}
+.mission-entry:hover {
+    padding-left: 10px;
+    background: linear-gradient(90deg, rgba(255,179,71,0.09), transparent 80%);
+    border-bottom-color: rgba(255,179,71,0.3);
+}
+
+.mission-index {
+    color: #5d3830;
+    font: 800 25px 'Orbitron', sans-serif;
+    text-align: center;
+}
+.mission-icon {
+    font-size: 25px;
+    margin-bottom: 3px;
+}
+.mission-title {
+    color: #fff;
+    font: 700 14px 'Orbitron', sans-serif;
+    letter-spacing: .4px;
+}
+.mission-desc {
+    color: #aaa;
+    font-size: 11px;
+    line-height: 1.55;
+}
+.mission-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+.tech-mark {
+    padding: 4px 8px;
+    border: 1px solid rgba(255,179,71,0.16);
+    border-radius: 20px;
+    color: #d9b77b;
+    font-size: 9px;
+    background: rgba(255,179,71,0.035);
+}
+.mission-status {
+    justify-self: end;
+    white-space: nowrap;
+    color: #ffb347;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: .8px;
+}
+
+.mission-empty {
+    padding: 28px 10px;
+    color: #777;
+    font-size: 11px;
+    border-bottom: 1px dashed rgba(255,179,71,0.12);
+}
+
+/* project modal */
+#projectModal {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,.72);
+    backdrop-filter: blur(7px);
+    z-index: 2000;
+    padding: 20px;
+}
+.project-modal-content {
+    position: relative;
+    width: min(650px, 94vw);
+    max-height: 85vh;
+    overflow: auto;
+    padding: 38px;
+    border: 1px solid rgba(255,179,71,.3);
+    border-radius: 24px;
+    background: linear-gradient(145deg, rgba(57,4,4,.98), rgba(18,0,0,.98));
+    box-shadow: 0 25px 80px rgba(0,0,0,.55);
+}
+.project-modal-content .modal-close {
+    position: absolute;
+    right: 18px;
+    top: 16px;
+    color: #ffb347;
+    cursor: pointer;
+    font-size: 18px;
+}
+.modal-icon-phoenix {
+    font-size: 42px;
+    text-align: center;
+    margin-bottom: 12px;
+}
+.modal-title-phoenix {
+    text-align: center;
+    color: #fff1b5;
+    font: 800 24px 'Orbitron', sans-serif;
+}
+.modal-status-phoenix {
+    display: table;
+    margin: 13px auto;
+    padding: 6px 13px;
+    border-radius: 30px;
+    color: #ffb347;
+    border: 1px solid rgba(255,179,71,.25);
+    font-size: 9px;
+    letter-spacing: 1px;
+}
+.modal-desc-phoenix {
+    color: #ccc;
+    text-align: center;
+    line-height: 1.75;
+    font-size: 12px;
+    margin: 18px 0;
+}
+.modal-tech-phoenix {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin: 16px 0 24px;
+}
+.modal-tech-phoenix span {
+    padding: 6px 10px;
+    border: 1px solid rgba(255,179,71,.2);
+    border-radius: 20px;
+    color: #e2bd78;
+    font-size: 10px;
+}
+.modal-links-phoenix {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+.modal-links-phoenix a {
+    text-decoration: none;
+    color: #ffb347;
+    border: 1px solid rgba(255,179,71,.35);
+    padding: 9px 16px;
+    border-radius: 30px;
+    font-size: 11px;
+    transition: .25s;
+}
+.modal-links-phoenix a:hover {
+    background: rgba(255,179,71,.13);
+    transform: translateY(-2px);
+}
+
+@media (max-width: 900px) {
+    .mission-entry {
+        grid-template-columns: 45px minmax(150px, 1fr) minmax(180px, 1.2fr);
+    }
+    .mission-tech, .mission-status { grid-column: 2 / -1; justify-self: start; }
+}
+@media (max-width: 650px) {
+    .project-section { padding: 10px 25px 60px; }
+    .project-intro { align-items: flex-start; flex-direction: column; }
+    .project-count { min-width: 100px; }
+    .mission-board { padding-left: 45px; }
+    .mission-board::before { left: 18px; }
+    .mission-group-heading { margin-left: -45px; }
+    .status-orb { width: 40px; height: 40px; flex-basis: 40px; font-size: 13px; }
+    .mission-group-heading h3 { font-size: 10px; }
+    .mission-entry {
+        grid-template-columns: 34px 1fr;
+        gap: 8px 12px;
+        padding: 14px 4px 16px 0;
+    }
+    .mission-entry::before { left: -36px; }
+    .mission-index { font-size: 16px; }
+    .mission-desc { grid-column: 2; }
+    .mission-tech { grid-column: 2; }
+    .mission-status { grid-column: 2; }
+    .project-modal-content { padding: 30px 20px; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- SLIDER MENU -->
+<div class="slider-menu" id="sliderMenu">
+    <div class="menu-logo">
+        <img src="Assets/Glogo.png" alt="Team Phoenix Logo">
+        <h3>TEAM PHOENIX</h3>
+    </div>
+    <div class="menu-items">
+        <a href="index.html" class="menu-item"><i class="fas fa-home"></i><span>HOME</span></a>
+        <a href="team.html" class="menu-item"><i class="fas fa-users"></i><span>TEAM</span></a>
+        <a href="projects.html" class="menu-item"><i class="fas fa-rocket"></i><span>PROJECTS</span></a>
+        <a href="achievements.html" class="menu-item"><i class="fas fa-trophy"></i><span>ACHIEVEMENTS</span></a>
+        <a href="contact.html" class="menu-item"><i class="fas fa-envelope"></i><span>CONTACT US</span></a>
+    </div>
+    <div class="menu-footer">
+        <a href="admin.html" class="member-login-btn"><i class="fas fa-user-shield"></i><span>ADMIN PANEL</span></a>
+    </div>
+</div>
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<canvas id="particleCanvas"></canvas>
+
+<nav class="navbar">
+    <div class="logo"><img src="Assets/Glogo.png" alt="Team Phoenix Logo"></div>
+    <div class="nav-links">
+        <a href="index.html">HOME</a>
+        <a href="team.html">TEAM</a>
+        <a href="projects.html">PROJECTS</a>
+        <a href="achievements.html">ACHIEVEMENTS</a>
+        <a href="contact.html">CONTACT</a>
+        <a href="admin.html">ADMIN</a>
+    </div>
+    <div class="mobile-menu-btn" id="menuIcon">☰</div>
+</nav>
+
+<section class="hero">
+    <div class="hero-badge">✦ THE PHOENIX LAB ✦</div>
+    <h1>PROJECTS</h1>
+    <div class="hero-divider"></div>
+    <p>Ideas become experiments. Experiments become missions. Missions become impact.</p>
+</section>
+
+<section class="project-section">
+    <div class="project-intro">
+        <div class="project-intro-copy">
+            <div class="eyebrow">PHOENIX MISSION LOG</div>
+            <h2>WHAT WE'RE BUILDING</h2>
+            <p>A living record of everything Team Phoenix has launched, is forging, or plans to ignite next.</p>
+        </div>
+        <div class="project-count"><strong id="projectCount">—</strong><span>MISSIONS</span></div>
+    </div>
+
+    <div class="mission-board">
+        <section class="mission-group" id="liveSection">
+            <div class="mission-group-heading">
+                <div class="status-orb"><i class="fas fa-rocket"></i></div>
+                <div><h3>LIVE · LAUNCHED</h3><small>Systems already in the wild</small></div>
+            </div>
+            <div id="liveStickyGrid" class="mission-list"></div>
+        </section>
+
+        <section class="mission-group" id="devSection">
+            <div class="mission-group-heading">
+                <div class="status-orb"><i class="fas fa-flask"></i></div>
+                <div><h3>IN PROGRESS · FORGING</h3><small>Current experiments and builds</small></div>
+            </div>
+            <div id="devStickyGrid" class="mission-list"></div>
+        </section>
+
+        <section class="mission-group" id="planSection">
+            <div class="mission-group-heading">
+                <div class="status-orb"><i class="fas fa-lightbulb"></i></div>
+                <div><h3>PLANNING · NEXT IGNITION</h3><small>Ideas waiting for their moment</small></div>
+            </div>
+            <div id="planStickyGrid" class="mission-list"></div>
+        </section>
+
+        <section class="mission-group" id="failSection">
+            <div class="mission-group-heading">
+                <div class="status-orb"><i class="fas fa-skull-crossbones"></i></div>
+                <div><h3>FAILED · LESSONS</h3><small>Experiments that taught us something</small></div>
+            </div>
+            <div id="failStickyGrid" class="mission-list"></div>
+        </section>
+    </div>
+</section>
+
+<div class="footer"><p>✨ BUILD. BREAK. LEARN. RISE AGAIN. ✨</p></div>
+
+<div class="modal" id="projectModal">
+    <div class="project-modal-content">
+        <div class="modal-close" id="closeModalBtn">✖</div>
+        <div class="modal-icon-phoenix" id="modalIconDisplay">🚀</div>
+        <div class="modal-title-phoenix" id="modalTitleDisplay">Project</div>
+        <div class="modal-status-phoenix" id="modalStatusBadge"></div>
+        <div class="modal-desc-phoenix" id="modalDescDisplay"></div>
+        <div class="modal-tech-phoenix" id="modalTechStack"></div>
+        <div class="modal-links-phoenix">
+            <a href="#" id="modalGithubLink" target="_blank"><i class="fab fa-github"></i> GITHUB</a>
+            <a href="#" id="modalDemoLink" target="_blank"><i class="fas fa-external-link-alt"></i> LIVE DEMO</a>
+        </div>
+    </div>
+</div>
+
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAeHLD5WT6lKFzvhk5rPiAycn8oHpP1l0I",
+        authDomain: "team-phoenix-admin-f27e6.firebaseapp.com",
+        projectId: "team-phoenix-admin-f27e6",
+        storageBucket: "team-phoenix-admin-f27e6.firebasestorage.app",
+        messagingSenderId: "604760212282",
+        appId: "1:604760212282:web:616ff666222e41db900603"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Phoenix particle field
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    function createParticles() {
+        particles = [];
+        for (let i = 0; i < 100; i++) {
+            particles.push({
+                x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+                radius: Math.random() * 3 + 1,
+                speedX: (Math.random() - 0.5) * 0.3,
+                speedY: (Math.random() - 0.5) * 0.2,
+                color: `rgba(255, ${Math.random() * 80 + 50}, 50, ${Math.random() * 0.4 + 0.1})`
+            });
+        }
+    }
+    function animateParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+            p.x += p.speedX; p.y += p.speedY;
+            if (p.x < 0) p.x = canvas.width; if (p.x > canvas.width) p.x = 0;
+            if (p.y < 0) p.y = canvas.height; if (p.y > canvas.height) p.y = 0;
+            ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fillStyle = p.color; ctx.fill();
+        });
+        requestAnimationFrame(animateParticles);
+    }
+    window.addEventListener('resize', () => { resizeCanvas(); createParticles(); });
+    resizeCanvas(); createParticles(); animateParticles();
+
+    // Shared Phoenix mobile menu
+    const menuIcon = document.getElementById('menuIcon');
+    const sliderMenu = document.getElementById('sliderMenu');
+    const menuOverlay = document.getElementById('menuOverlay');
+    function openMenu() { sliderMenu.classList.add('open'); menuOverlay.classList.add('show'); document.body.classList.add('menu-open'); }
+    function closeMenu() { sliderMenu.classList.remove('open'); menuOverlay.classList.remove('show'); document.body.classList.remove('menu-open'); }
+    menuIcon.addEventListener('click', e => { e.stopPropagation(); sliderMenu.classList.contains('open') ? closeMenu() : openMenu(); });
+    menuOverlay.addEventListener('click', closeMenu);
+
+    function escapeHtml(str) {
+        if (!str) return "";
+        return String(str).replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+    }
+
+    function renderMission(project, index) {
+        const status = project.status;
+        const labels = {live: '● LIVE', dev: '◐ FORGING', plan: '○ PLANNED', failed: '× FAILED'};
+        const icon = project.icon || (status === 'live' ? '🚀' : status === 'dev' ? '🧪' : status === 'plan' ? '💡' : '⚰️');
+        const desc = project.desc || 'No description yet.';
+        const short = desc.length > 145 ? desc.substring(0,145) + '…' : desc;
+        const techs = (project.techTags || []).slice(0,5).map(t => `<span class="tech-mark">${escapeHtml(t)}</span>`).join('');
+        return `
+            <article class="mission-entry" data-id="${escapeHtml(project.id)}">
+                <div class="mission-index">${String(index).padStart(2,'0')}</div>
+                <div>
+                    <div class="mission-icon">${icon}</div>
+                    <div class="mission-title">${escapeHtml(project.title || 'UNTITLED MISSION')}</div>
+                </div>
+                <div class="mission-desc">${escapeHtml(short)}</div>
+                <div class="mission-tech">${techs || '<span class="tech-mark">PHOENIX LAB</span>'}</div>
+                <div class="mission-status">${labels[status] || '● ACTIVE'}</div>
+            </article>
+        `;
+    }
+
+    function emptyMission(message) {
+        return `<div class="mission-empty">${escapeHtml(message)}</div>`;
+    }
+
+    async function loadAndRenderProjects() {
+        const containers = ['liveStickyGrid','devStickyGrid','planStickyGrid','failStickyGrid'];
+        try {
+            const snapshot = await getDocs(collection(db, 'projects'));
+            const projects = [];
+            snapshot.forEach(doc => projects.push({id: doc.id, ...doc.data()}));
+            projects.sort((a,b) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')));
+
+            const groups = {
+                live: projects.filter(p => p.status === 'live'),
+                dev: projects.filter(p => p.status === 'dev'),
+                plan: projects.filter(p => p.status === 'plan'),
+                failed: projects.filter(p => p.status === 'failed')
+            };
+            document.getElementById('projectCount').textContent = projects.length;
+
+            const map = [
+                ['liveStickyGrid', groups.live, 'No live missions yet. The launch pad is waiting.'],
+                ['devStickyGrid', groups.dev, 'No active builds right now.'],
+                ['planStickyGrid', groups.plan, 'No planned missions yet.'],
+                ['failStickyGrid', groups.failed, 'No failed missions. Keep the streak alive.']
+            ];
+            map.forEach(([id, list, empty]) => {
+                document.getElementById(id).innerHTML = list.length
+                    ? list.map((p,i) => renderMission(p, i+1)).join('')
+                    : emptyMission(empty);
+            });
+
+            const all = projects;
+            document.querySelectorAll('.mission-entry').forEach(entry => {
+                const project = all.find(p => p.id === entry.dataset.id);
+                if (project) entry.addEventListener('click', () => openProjectModal(project));
+            });
+        } catch (err) {
+            console.error('Firestore error:', err);
+            document.getElementById('projectCount').textContent = '!';
+            containers.forEach(id => document.getElementById(id).innerHTML = emptyMission('Unable to load missions. Check the browser console for the Firebase error.'));
+        }
+    }
+
+    const modal = document.getElementById('projectModal');
+    const modalIcon = document.getElementById('modalIconDisplay');
+    const modalTitle = document.getElementById('modalTitleDisplay');
+    const modalStatus = document.getElementById('modalStatusBadge');
+    const modalDesc = document.getElementById('modalDescDisplay');
+    const modalTech = document.getElementById('modalTechStack');
+
+    function openProjectModal(project) {
+        modalIcon.textContent = project.icon || '🚀';
+        modalTitle.textContent = project.title || 'UNTITLED MISSION';
+        const labels = {live:'● LIVE · ACTIVE',dev:'◐ IN PROGRESS · FORGING',plan:'○ PLANNING · NEXT UP',failed:'× FAILED · LESSON LEARNED'};
+        modalStatus.textContent = labels[project.status] || '● ACTIVE';
+        modalDesc.textContent = project.desc || 'No detailed description provided.';
+        modalTech.innerHTML = (project.techTags || []).map(t => `<span>${escapeHtml(t)}</span>`).join('');
+        document.getElementById('modalGithubLink').href = project.github || '#';
+        document.getElementById('modalDemoLink').href = project.demo || '#';
+        modal.style.display = 'flex';
+    }
+    function closeModal() { modal.style.display = 'none'; }
+    document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    loadAndRenderProjects();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Team Phoenix | Official Web-Page</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(
+        -45deg,
+        #140000,
+        #2b0000,
+        #4a0000,
+        #1f0000,
+        #5c0a0a
+    );
+    background-size: 500% 500%;
+    animation: gradientMove 16s ease-in-out infinite;
+    color: #f5f0f0;
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.5;
+    scroll-behavior: smooth;
+}
+
+@keyframes gradientMove {
+    0%   { background-position: 0% 50%; }
+    20%  { background-position: 40% 80%; }
+    40%  { background-position: 80% 40%; }
+    60%  { background-position: 60% 0%; }
+    80%  { background-position: 20% 30%; }
+    100% { background-position: 0% 50%; }
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at 30% 30%, rgba(255,80,40,0.15), transparent 40%),
+                radial-gradient(circle at 70% 70%, rgba(255,0,0,0.1), transparent 50%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+#particleCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #2a0000;
+}
+::-webkit-scrollbar-thumb {
+    background: #ff6a4b;
+    border-radius: 12px;
+}
+
+/* ========== NAVBAR ========== */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 60px;
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,179,71,0.3);
+    position: relative;
+    z-index: 100;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.logo img {
+    height: 60px;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+    transition: transform 0.2s;
+}
+.logo img:hover {
+    transform: scale(1.02);
+}
+
+.nav-links {
+    display: flex;
+    gap: 35px;
+    flex-wrap: wrap;
+}
+
+.nav-links a {
+    color: #ffb347;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    color: white;
+    transform: translateY(-2px);
+}
+
+.mobile-menu-btn {
+    display: none;
+    font-size: 28px;
+    cursor: pointer;
+    background: rgba(255,80,40,0.2);
+    width: 48px;
+    height: 48px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: #ffb347;
+}
+
+/* ========== HERO SECTION ========== */
+.hero {
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    padding: 40px 60px;
+    gap: 60px;
+    position: relative;
+    z-index: 5;
+    flex-wrap: wrap;
+}
+
+.hero-left {
+    flex: 1.2;
+    min-width: 320px;
+}
+
+.hero-badge {
+    display: inline-block;
+    color: #ffb347;
+    font-size: 11px;
+    letter-spacing: 4px;
+    margin-bottom: 25px;
+    padding: 5px 14px;
+    border: 1px solid rgba(255,179,71,0.3);
+    border-radius: 40px;
+    background: rgba(255,179,71,0.05);
+}
+
+.hero-title {
+    margin-bottom: 20px;
+}
+
+.title-line {
+    display: block;
+}
+
+.title-word {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 72px;
+    font-weight: 900;
+    letter-spacing: 6px;
+    background: linear-gradient(135deg, #fff1b5, #ffbc6e, #ff6b4a);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
+}
+
+.title-line:first-child .title-word {
+    font-size: 65px;
+    letter-spacing: 8px;
+}
+
+.title-line:last-child .title-word {
+    font-size: 72px;
+    letter-spacing: 12px;
+}
+
+.hero-divider {
+    width: 80px;
+    height: 2px;
+    background: linear-gradient(90deg, #ffb347, #ff6b4a);
+    margin: 20px 0 25px;
+}
+
+.hero-description {
+    font-size: 16px;
+    color: #ccc;
+    line-height: 1.7;
+    margin-bottom: 35px;
+    max-width: 500px;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #ffb347, #ff6b4a);
+    color: #2c0000;
+    padding: 12px 28px;
+    border-radius: 40px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(255,107,74,0.4);
+    gap: 12px;
+}
+
+.btn-outline {
+    border: 1px solid #ffb347;
+    color: #ffb347;
+    padding: 12px 28px;
+    border-radius: 40px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-outline:hover {
+    background: rgba(255,179,71,0.1);
+    transform: translateY(-3px);
+    gap: 12px;
+}
+
+.hero-right {
+    flex: 0.8;
+    min-width: 300px;
+    background: rgba(0,0,0,0.35);
+    backdrop-filter: blur(16px);
+    border-radius: 28px;
+    padding: 35px 30px;
+    border: 1px solid rgba(255,179,71,0.2);
+    transition: 0.3s;
+    animation: cardFadeIn 0.6s ease-out 0.2s both;
+}
+
+@keyframes cardFadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-right:hover {
+    border-color: rgba(255,179,71,0.4);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+}
+
+.stats-grid {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid rgba(255,179,71,0.15);
+}
+
+.stat-item {
+    text-align: center;
+    flex: 1;
+}
+
+.stat-number {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    color: #ffb347;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    font-size: 10px;
+    color: #999;
+    letter-spacing: 1px;
+}
+
+.stat-item:not(:last-child) {
+    border-right: 1px solid rgba(255,179,71,0.15);
+}
+
+.card-quote {
+    text-align: center;
+}
+
+.card-quote i {
+    color: #ffb347;
+    font-size: 22px;
+    opacity: 0.5;
+    margin-bottom: 12px;
+    display: inline-block;
+}
+
+.quote-text {
+    font-size: 13px;
+    color: #ddd;
+    font-style: italic;
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+
+.quote-author {
+    display: block;
+    font-size: 10px;
+    color: #ffb347;
+    letter-spacing: 1px;
+}
+
+/* ========== ABOUT SECTION ========== */
+.about {
+    padding: 60px 60px;
+    max-width: 1300px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 5;
+}
+
+.about h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 32px;
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+    display: inline-block;
+    border-left: 6px solid #ff8640;
+    padding-left: 20px;
+    background: linear-gradient(135deg, #fff1b5, #ffbc6e);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.about p {
+    font-size: 16px;
+    color: #fce6cf;
+    line-height: 1.8;
+}
+
+.about strong {
+    color: #ffb347;
+}
+
+.about i {
+    color: #ffbc7a;
+}
+
+/* ========== FEATURED PROJECTS ========== */
+.projects-section {
+    padding: 40px 60px;
+    max-width: 1300px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 5;
+}
+
+.projects-section h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 32px;
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+    display: inline-block;
+    border-left: 6px solid #ff8640;
+    padding-left: 20px;
+    background: linear-gradient(135deg, #fff1b5, #ffbc6e);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.projects-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+}
+
+.project-preview-card {
+    width: 280px;
+    background: rgba(255,255,255,0.03);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(255,179,71,0.2);
+    padding: 25px;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.project-preview-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255,179,71,0.5);
+}
+
+.project-preview-card i {
+    font-size: 48px;
+    color: #ffb347;
+    margin-bottom: 15px;
+}
+
+.project-preview-card h3 {
+    color: #ffb347;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.project-preview-card p {
+    font-size: 12px;
+    color: #ccc;
+}
+
+.view-all-link {
+    display: inline-block;
+    margin-top: 30px;
+    color: #ffb347;
+    text-decoration: none;
+    border-bottom: 1px dotted #ffb347;
+    transition: 0.3s;
+}
+
+.view-all-link:hover {
+    color: white;
+    transform: translateX(5px);
+}
+
+.loading-state {
+    text-align: center;
+    color: #ffb347;
+    padding: 40px;
+}
+
+/* ========== CONTACT SECTION ========== */
+.contact-section {
+    padding: 40px 60px;
+    max-width: 1300px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 5;
+}
+
+.contact-section h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 32px;
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+    display: inline-block;
+    border-left: 6px solid #ff8640;
+    padding-left: 20px;
+    background: linear-gradient(135deg, #fff1b5, #ffbc6e);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.contact-section p {
+    font-size: 16px;
+    color: #fce6cf;
+    line-height: 1.7;
+}
+
+.contact-section a {
+    color: #ffbc7a;
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: 1px dotted;
+}
+.contact-section a:hover {
+    color: #ffd966;
+}
+
+.footer {
+    text-align: center;
+    padding: 35px;
+    font-size: 14px;
+    letter-spacing: 1px;
+    border-top: 1px solid rgba(255,165,80,0.3);
+    margin-top: 20px;
+    position: relative;
+    z-index: 5;
+}
+
+/* Slider Menu (Mobile) */
+.slider-menu {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    width: 300px;
+    height: 100%;
+    background: linear-gradient(180deg, #1a0a0a, #2d0909);
+    backdrop-filter: blur(20px);
+    z-index: 1001;
+    transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 30px 0;
+    border-right: 2px solid #ffb347;
+    display: flex;
+    flex-direction: column;
+}
+
+.slider-menu.open { left: 0; }
+
+.menu-logo {
+    text-align: center;
+    padding: 25px 20px;
+    border-bottom: 1px solid rgba(255,179,71,0.3);
+    margin-bottom: 20px;
+}
+
+.menu-logo img { width: 70px; margin-bottom: 10px; }
+.menu-logo h3 { font-family: 'Orbitron', sans-serif; font-size: 16px; background: linear-gradient(135deg, #fff1b5, #ffbc6e); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+.menu-items { flex: 1; padding: 0 20px; }
+.menu-item { display: flex; align-items: center; gap: 15px; padding: 12px 20px; margin: 5px 0; border-radius: 40px; color: #fff; text-decoration: none; font-weight: 500; }
+.menu-item i { width: 24px; color: #ffb347; }
+.menu-item:hover { background: rgba(255,179,71,0.15); transform: translateX(5px); }
+
+.menu-footer { padding: 20px; border-top: 1px solid rgba(255,179,71,0.3); margin-top: auto; }
+.member-login-btn { display: flex; align-items: center; gap: 10px; padding: 10px 15px; background: rgba(255,179,71,0.15); border-radius: 40px; text-decoration: none; }
+.member-login-btn span { color: #ffb347; }
+
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(3px);
+    z-index: 1000;
+    display: none;
+}
+.menu-overlay.show { display: block; }
+body.menu-open { overflow: hidden; }
+
+@media (max-width: 1100px) {
+    .hero { gap: 40px; }
+    .title-word { font-size: 55px !important; letter-spacing: 6px !important; }
+    .hero-right { flex: 1; }
+}
+
+@media (max-width: 900px) {
+    .hero { flex-direction: column; text-align: center; padding: 40px 40px; }
+    .hero-left { text-align: center; }
+    .hero-description { margin-left: auto; margin-right: auto; }
+    .hero-buttons { justify-content: center; }
+    .hero-divider { margin-left: auto; margin-right: auto; }
+    .hero-badge { margin-left: auto; margin-right: auto; display: inline-block; }
+    .hero-right { width: 100%; max-width: 400px; margin: 0 auto; }
+}
+
+@media (max-width: 768px) {
+    .navbar { padding: 15px 25px; }
+    .nav-links { display: none; }
+    .mobile-menu-btn { display: flex; }
+    .hero { padding: 30px 25px; }
+    .title-word { font-size: 38px !important; letter-spacing: 4px !important; }
+    .stats-grid { gap: 10px; }
+    .stat-number { font-size: 28px; }
+    .about, .projects-section, .contact-section { padding: 30px 25px; }
+}
+</style>
+</head>
+<body>
+
+<!-- FIRE PARTICLES CANVAS -->
+<canvas id="particleCanvas"></canvas>
+
+<!-- SLIDER MENU (Mobile) -->
+<div class="slider-menu" id="sliderMenu">
+    <div class="menu-logo">
+        <img src="Assets/Glogo.png" alt="Team Phoenix">
+        <h3>TEAM PHOENIX</h3>
+    </div>
+    <div class="menu-items">
+        <a href="index.html" class="menu-item"><i class="fas fa-home"></i><span>HOME</span></a>
+        <a href="team.html" class="menu-item"><i class="fas fa-users"></i><span>TEAM</span></a>
+        <a href="projects.html" class="menu-item"><i class="fas fa-rocket"></i><span>PROJECTS</span></a>
+        <a href="achievements.html" class="menu-item"><i class="fas fa-trophy"></i><span>ACHIEVEMENTS</span></a>
+        <a href="contact.html" class="menu-item"><i class="fas fa-envelope"></i><span>CONTACT US</span></a>
+    </div>
+    <div class="menu-footer">
+        <a href="admin.html" class="member-login-btn">
+            <i class="fas fa-user-shield"></i>
+            <span>MEMBER LOGIN</span>
+        </a>
+    </div>
+</div>
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="logo">
+        <img src="Assets/Glogo.png" alt="Team Phoenix Logo">
+    </div>
+    <div class="nav-links">
+        <a href="index.html">HOME</a>
+        <a href="team.html">TEAM</a>
+        <a href="projects.html">PROJECTS</a>
+        <a href="achievements.html">ACHIEVEMENTS</a>
+        <a href="contact.html">CONTACT</a>
+        <a href="admin.html">ADMIN</a>
+    </div>
+    <div class="mobile-menu-btn" id="menuIcon">☰</div>
+</nav>
+
+<!-- HERO SECTION -->
+<section class="hero">
+    <div class="hero-left">
+        <div class="hero-badge">✦ HACKATHON SQUAD ✦</div>
+        <div class="hero-title">
+            <span class="title-line"><span class="title-word">TEAM</span></span>
+            <span class="title-line"><span class="title-word">PHOENIX</span></span>
+        </div>
+        <div class="hero-divider"></div>
+        <p class="hero-description">
+            We build, break, and rebuild. 48-hour hackathons, real solutions. 
+            Turning ideas into reality with fire and passion.
+        </p>
+        <div class="hero-buttons">
+            <a href="projects.html" class="btn-primary">View Projects →</a>
+            <a href="contact.html" class="btn-outline">Contact Us →</a>
+        </div>
+    </div>
+    <div class="hero-right">
+        <div class="stats-grid">
+            <div class="stat-item"><span class="stat-number">0</span><span class="stat-label">HACKATHONS PARTICIPATED</span></div>
+            <div class="stat-item"><span class="stat-number">0</span><span class="stat-label">WINS</span></div>
+            <div class="stat-item"><span class="stat-number">4</span><span class="stat-label">PROJECTS</span></div>
+            <div class="stat-item"><span class="stat-number">5</span><span class="stat-label">MEMBERS</span></div>
+        </div>
+        <!-- <div class="card-quote">
+            <i class="fas fa-quote-left"></i>
+            <div class="quote-text">The most dedicated hackathon team I've ever worked with. They don't stop until it's perfect.</div>
+            <span class="quote-author">— Tech Judge, Hackathon 2024</span>
+        </div> -->
+    </div>
+</section>
+
+<!-- ABOUT SECTION -->
+<section class="about">
+    <h2>✦ ABOUT TEAM</h2>
+    <p>Team Phoenix is a hackathon squad built on collaboration, curiosity, and the hunger to build things that matter. We don't wait for opportunities – we create them.<br><br>
+    We are a group of developers who believe that the best way to learn is by building. Whether it's a 48-hour hackathon or a month-long project, we show up prepared, work as a unit, and push each other to be better.<br><br>
+    <strong>The Name – Why Phoenix?</strong><br>
+    The phoenix rises from the ashes. We've failed. We've crashed. We've had code break at 4 AM. But every time, we get back up, learn what went wrong, and come back stronger.<br><br>
+    <i>"We don't rise to the level of our goals, we fall to the level of our systems."<br>~ James Clear</i></p>
+</section>
+
+<!-- FEATURED PROJECTS SECTION -->
+<section class="projects-section">
+    <h2>🔥 FEATURED PROJECTS</h2>
+    <div class="projects-preview" id="featuredProjects">
+        <div class="loading-state">🔥 Loading projects...</div>
+    </div>
+    <div style="text-align: center;">
+        <a href="projects.html" class="view-all-link">VIEW ALL PROJECTS →</a>
+    </div>
+</section>
+
+<!-- CONTACT SECTION -->
+<section class="contact-section">
+    <h2>📬 CONTACT</h2>
+    <p>Email: <a href="mailto:officialteamphoenixx@email.com">officialteamphoenixx@email.com</a><br>
+    Instagram: <a href="#">@teamphOenix_official</a><br>
+    For collaborations, reach out to our lead developers.</p>
+</section>
+
+<!-- FOOTER -->
+<div class="footer">© 2026 Team Phoenix — Rise from the Ashes | All systems blazing</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, orderBy, limit, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAeHLD5WT6lKFzvhk5rPiAycn8oHpP1l0I",
+        authDomain: "team-phoenix-admin-f27e6.firebaseapp.com",
+        projectId: "team-phoenix-admin-f27e6",
+        storageBucket: "team-phoenix-admin-f27e6.firebasestorage.app",
+        messagingSenderId: "604760212282",
+        appId: "1:604760212282:web:616ff666222e41db900603"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // ========== PARTICLES ==========
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    function createParticles() {
+        particles = [];
+        for (let i = 0; i < 120; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 3 + 1,
+                speedX: (Math.random() - 0.5) * 0.3,
+                speedY: (Math.random() - 0.5) * 0.2,
+                color: `rgba(255, ${Math.random() * 80 + 50}, 50, ${Math.random() * 0.4 + 0.1})`
+            });
+        }
+    }
+
+    function animateParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+            p.x += p.speedX;
+            p.y += p.speedY;
+            if (p.x < 0) p.x = canvas.width;
+            if (p.x > canvas.width) p.x = 0;
+            if (p.y < 0) p.y = canvas.height;
+            if (p.y > canvas.height) p.y = 0;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fillStyle = p.color;
+            ctx.fill();
+        });
+        requestAnimationFrame(animateParticles);
+    }
+
+    window.addEventListener('resize', () => { resizeCanvas(); createParticles(); });
+    resizeCanvas();
+    createParticles();
+    animateParticles();
+
+    // ========== SLIDER MENU ==========
+    const menuIcon = document.getElementById('menuIcon');
+    const sliderMenu = document.getElementById('sliderMenu');
+    const menuOverlay = document.getElementById('menuOverlay');
+
+    function openMenu() {
+        sliderMenu.classList.add('open');
+        menuOverlay.classList.add('show');
+        document.body.classList.add('menu-open');
+    }
+
+    function closeMenu() {
+        sliderMenu.classList.remove('open');
+        menuOverlay.classList.remove('show');
+        document.body.classList.remove('menu-open');
+    }
+
+    if (menuIcon) {
+        menuIcon.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (sliderMenu.classList.contains('open')) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
+        });
+    }
+
+    if (menuOverlay) {
+        menuOverlay.addEventListener('click', closeMenu);
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && sliderMenu.classList.contains('open')) {
+            closeMenu();
+        }
+    });
+
+    // ========== LOAD STATS ==========
+    async function loadStats() {
+        try {
+            const statsDoc = await getDoc(doc(db, 'settings', 'stats'));
+            if (statsDoc.exists()) {
+                const data = statsDoc.data();
+                const statNumbers = document.querySelectorAll('.stat-number');
+                if (statNumbers.length >= 4) {
+                    statNumbers[0].textContent = (data.projects || 24) + '+';
+                    statNumbers[1].textContent = data.members || 6;
+                    statNumbers[2].textContent = data.wins || 5;
+                    statNumbers[3].textContent = (data.tech || 12) + '+';
+                }
+            }
+        } catch (error) {
+            console.error("Error loading stats:", error);
+        }
+    }
+
+    // ========== LOAD FEATURED PROJECTS ==========
+    async function loadFeaturedProjects() {
+        const container = document.getElementById('featuredProjects');
+        try {
+            const querySnapshot = await getDocs(collection(db, 'projects'));
+            const projects = [];
+            querySnapshot.forEach(doc => {
+                projects.push({ id: doc.id, ...doc.data() });
+            });
+            projects.sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')));
+            projects.splice(3);
+
+            if (projects.length === 0) {
+                container.innerHTML = '<div class="loading-state">🚀 No projects yet. Check back soon!</div>';
+                return;
+            }
+
+            const getIcon = (status) => {
+                switch(status) {
+                    case 'live': return 'fa-rocket';
+                    case 'dev': return 'fa-code';
+                    default: return 'fa-cogs';
+                }
+            };
+
+            container.innerHTML = projects.map(project => `
+                <div class="project-preview-card">
+                    <i class="fas ${getIcon(project.status)}"></i>
+                    <h3>${escapeHtml(project.title)}</h3>
+                    <p>${escapeHtml(project.desc?.substring(0, 80))}${project.desc?.length > 80 ? '...' : ''}</p>
+                </div>
+            `).join('');
+        } catch (error) {
+            console.error("Featured projects Firestore error:", error);
+            container.innerHTML = `<div class="loading-state">❌ Failed to load projects<br><small>${escapeHtml(error?.code || error?.message || 'Unknown Firebase error')}</small></div>`;
+        }
+    }
+
+    function escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    // Load everything
+    loadStats();
+    loadFeaturedProjects();
+</script>
+
+</body>
+</html>
